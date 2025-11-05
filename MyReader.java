@@ -21,7 +21,7 @@ public class MyReader {
 
 
     }
-
+   //converts the file to arraylist
     public ArrayList<String> listConverter(){
       ArrayList<String> fileList = new ArrayList<String>();
       File fileObj = new File(filename); //using the file name in the object
@@ -38,12 +38,13 @@ public class MyReader {
       } 
       catch (FileNotFoundException e) {
         System.out.println("An error occurred.");
-        e.printStackTrace();
+         // e.printStackTrace();
+        
       }
 
         return fileList;
     }
-
+   //converts the file to hashmap
      public HashMap<Integer, String> fileHasher(){
       HashMap<Integer, String> fileList = new HashMap<Integer, String>();
       File fileObj = new File(filename); //using the file name in the object
@@ -62,7 +63,7 @@ public class MyReader {
       } 
       catch (FileNotFoundException e) {
         System.out.println("An error occurred.");
-        e.printStackTrace();
+        // e.printStackTrace();
       }
 
         return fileList;

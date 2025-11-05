@@ -31,7 +31,7 @@ public class Main {
         // }
 
         // Print keys and values
-
+        System.out.println(fileHash);
         
         for (Integer i : fileHash.keySet()) {
         System.out.println("key: "+ i + " value: " + fileHash.get(i));
