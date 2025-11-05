@@ -1,3 +1,7 @@
+import java.io.File;                  // Import the File class
+import java.io.FileNotFoundException; // Import this class to handle errors
+import java.util.ArrayList;             // Import the Scanner class to read text files
+import java.util.Scanner;
 
 
 public class MyReader {
@@ -10,22 +14,36 @@ public class MyReader {
     public MyReader(String filename) {
       this.filename = filename; // seting the filename
     }
-    
-    
-  //   public static void main(String[] args) {
-  //   File myObj = new File("filename.txt");
 
-  //   // try-with-resources: Scanner will be closed automatically
-  //   try (Scanner myReader = new Scanner(myObj)) {
-  //     while (myReader.hasNextLine()) {
-  //       String data = myReader.nextLine();
-  //       System.out.println(data);
-  //     }
-  //   } catch (FileNotFoundException e) {
-  //     System.out.println("An error occurred.");
-  //     e.printStackTrace();
-  //   }
-  // }
+    public void setFileName(String fileName) { //setter
+      this.filename = fileName;
+
+
+    }
+
+    public ArrayList<String> listConverter(){
+      ArrayList<String> fileList = new ArrayList<String>();
+      File fileObj = new File(filename); //using the file name in the object
+
+      // try-with-resources: Scanner will be closed automatically
+      try (Scanner myReader = new Scanner(fileObj)) {
+        while (myReader.hasNextLine()) {
+          String data = myReader.nextLine();
+          if(data.trim().isEmpty()) //if it's just an empty line then skip
+            continue;
+
+          fileList.add(data);
+        }
+      } 
+      catch (FileNotFoundException e) {
+        System.out.println("An error occurred.");
+        e.printStackTrace();
+      }
+
+        return fileList;
+    }
+    
+
 }
 
 
