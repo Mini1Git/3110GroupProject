@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class Main {
@@ -16,6 +17,26 @@ public class Main {
         {
             System.out.println(fileList1.get(i));
         }
+
+        
+        String fileName2 = input.nextLine(); //taking user input for file name
+
+        MyReader file2 = new MyReader(fileName2);
+
+        HashMap<Integer, String> fileHash = file2.fileHasher();
+        
+        // Print values
+        // for (String i : fileHash.values()) {
+        // System.out.println(i);
+        // }
+
+        // Print keys and values
+
+        
+        for (Integer i : fileHash.keySet()) {
+        System.out.println("key: "+ i + " value: " + fileHash.get(i));
+        }
+
         input.close();
     }
 }
