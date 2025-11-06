@@ -30,8 +30,8 @@ public class MyReader {
       try (Scanner myReader = new Scanner(fileObj)) {
         while (myReader.hasNextLine()) {
           String data = myReader.nextLine();
-          if(data.trim().isEmpty()) //if it's just an empty line then skip
-            continue;
+          // if(data.trim().isEmpty()) //if it's just an empty line then skip
+          //   continue; //removing because mess up the line number
 
           fileList.add(data);
         }
@@ -54,8 +54,8 @@ public class MyReader {
         int i = 0;
         while (myReader.hasNextLine()) {
           String data = myReader.nextLine();
-          if(data.trim().isEmpty()) //if it's just an empty line then skip
-            continue;
+          // if(data.trim().isEmpty()) //if it's just an empty line then skip
+          //   continue; //removing because it'll mess up the line number
 
           fileList.put(i, data);
           i++;
