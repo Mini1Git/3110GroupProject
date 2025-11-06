@@ -9,12 +9,15 @@ public class LineComparator {
     public static ArrayList<int[]> compare(ArrayList<String> file1, ArrayList<String> file2){
         //creates the result arraylist
         ArrayList<int[]> results = new ArrayList<int[]>();
-
+        
+        //puting them in a variable reduce time complexity
+        int file1_size = file1.size();
+        int file2_size = file2.size();
         //a nested for loop to comapre each line from each file to check for matching string contents
-        for(int i = 1; i < file1.size(); i++){
+        for(int i = 1; i < file1_size; i++){
             if(file1.get(i).trim().isEmpty())
                 continue; //skiping the empty strings
-            for(int j = 1; j < file2.size(); j++){
+            for(int j = 1; j < file2_size; j++){
 
                 if(file2.get(j).trim().isEmpty())
                     continue; //skiping the empty strings
