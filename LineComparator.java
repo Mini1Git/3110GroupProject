@@ -12,8 +12,11 @@ public class LineComparator {
 
         //a nested for loop to comapre each line from each file to check for matching string contents
         for(int i = 0; i < file1.size(); i++){
+            if(file1.get(i).trim().isEmpty())
+                continue; //skiping the empty strings
             for(int j = 0; j < file2.size(); j++){
-
+                if(file1.get(j).trim().isEmpty())
+                    continue; //skiping the empty strings
                 if(file1.get(i).equals(file2.get(j))){
                     //if the string content from file 1 and 2 match, add the line numbers to the results
                     results.add(new int[]{i, j});
