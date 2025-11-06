@@ -15,7 +15,7 @@ public class LineComparator {
             if(file1.get(i).trim().isEmpty())
                 continue; //skiping the empty strings
             for(int j = 0; j < file2.size(); j++){
-                if(file1.get(j).trim().isEmpty())
+                if(file2.get(j).trim().isEmpty())
                     continue; //skiping the empty strings
                 if(file1.get(i).equals(file2.get(j))){
                     //if the string content from file 1 and 2 match, add the line numbers to the results
