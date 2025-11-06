@@ -55,6 +55,8 @@ public class MyReader {
         while (myReader.hasNextLine()) {
           i++;
           String data = myReader.nextLine();
+          if(data.trim().isEmpty()) //if it's just an empty line then skip
+            continue; //removing because mess up the line number
 
           fileList.put(i, data);
           
