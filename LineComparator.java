@@ -11,10 +11,10 @@ public class LineComparator {
         ArrayList<int[]> results = new ArrayList<int[]>();
 
         //a nested for loop to comapre each line from each file to check for matching string contents
-        for(int i = 0; i < file1.size(); i++){
+        for(int i = 1; i < file1.size(); i++){
             if(file1.get(i).trim().isEmpty())
                 continue; //skiping the empty strings
-            for(int j = 0; j < file2.size(); j++){
+            for(int j = 1; j < file2.size(); j++){
                 if(file1.get(j).trim().isEmpty())
                     continue; //skiping the empty strings
                 if(file1.get(i).equals(file2.get(j))){

@@ -25,7 +25,7 @@ public class MyReader {
     public ArrayList<String> listConverter(){
       ArrayList<String> fileList = new ArrayList<String>();
       File fileObj = new File(filename); //using the file name in the object
-
+      fileList.add("");//so there is nothing in index 0
       // try-with-resources: Scanner will be closed automatically
       try (Scanner myReader = new Scanner(fileObj)) {
         while (myReader.hasNextLine()) {
@@ -53,12 +53,11 @@ public class MyReader {
       try (Scanner myReader = new Scanner(fileObj)) {
         int i = 0;
         while (myReader.hasNextLine()) {
+          i++;
           String data = myReader.nextLine();
-          // if(data.trim().isEmpty()) //if it's just an empty line then skip
-          //   continue; //removing because it'll mess up the line number
 
           fileList.put(i, data);
-          i++;
+          
         }
       } 
       catch (FileNotFoundException e) {
