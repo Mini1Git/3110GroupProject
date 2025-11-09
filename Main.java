@@ -45,6 +45,10 @@ public class Main {
               System.out.println(temp);
              
         }
+        /*
+        output here
+        writeToFile();
+        */
 
         input.close();
     }
