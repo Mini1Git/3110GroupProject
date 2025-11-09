@@ -45,10 +45,12 @@ public class Main {
               System.out.println(temp);
              
         }
-        /*
-        output here
-        writeToFile();
-        */
+        
+        //comparison
+        ArrayList<int[]> listResults = compare(fileList1, );
+
+        //write to file
+        //writeToFile(listResults);
 
         input.close();
     }
