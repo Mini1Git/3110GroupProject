@@ -23,7 +23,8 @@ public class Main {
 
         MyReader file2 = new MyReader(fileName2);
 
-        HashMap<Integer, String> fileHash = file2.fileHasher();
+        ArrayList<String> fileList2 = file2.listConverter();
+        //HashMap<Integer, String> fileHash = file2.fileHasher();
         
         // Print values
         // for (String i : fileHash.values()) {
@@ -37,17 +38,18 @@ public class Main {
         // System.out.println("key: "+ i + " value: " + fileHash.get(i));
         // }
 
-         int listSize = fileList1.size(); //size of arraylist
+        int listSize = fileList1.size(); //size of arraylist
+        /* file hash size
         for(int i = 0; i<listSize; i++)
         {
              String temp = fileList1.get(i);
              if(fileHash.containsValue(temp))
               System.out.println(temp);
-             
         }
+        */
         
         //comparison
-        ArrayList<int[]> listResults = compare(fileList1, );
+        ArrayList<int[]> listResults = compare(fileList1, fileList2);
 
         //write to file
         //writeToFile(listResults);
