@@ -49,10 +49,10 @@ public class Main {
         */
         
         //comparison
-        ArrayList<int[]> listResults = compare(fileList1, fileList2);
+        ArrayList<int []> compResults = LineComparator.compare(fileList1, fileList2);
 
         //write to file
-        //writeToFile(listResults);
+        Output.writeToFile(compResults);
 
         input.close();
     }
