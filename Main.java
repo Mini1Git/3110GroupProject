@@ -39,7 +39,7 @@ public class Main {
         // }
 
         int listSize = fileList1.size(); //size of arraylist
-        /* file hash size
+        /* comparison print test for hash
         for(int i = 0; i<listSize; i++)
         {
              String temp = fileList1.get(i);
