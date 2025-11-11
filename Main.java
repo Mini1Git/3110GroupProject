@@ -38,8 +38,8 @@ public class Main {
         // System.out.println("key: "+ i + " value: " + fileHash.get(i));
         // }
 
+        /* comparison print test between arrayList & hash
         int listSize = fileList1.size(); //size of arraylist
-        /* comparison print test for hash
         for(int i = 0; i<listSize; i++)
         {
              String temp = fileList1.get(i);
