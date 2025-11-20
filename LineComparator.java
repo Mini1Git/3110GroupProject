@@ -3,6 +3,26 @@ import java.util.ArrayList;
 
 public class LineComparator {
 
+    private ArrayList<String> file1;
+    private ArrayList<String> file2;
+    private ArrayList<int[]> matched;
+    private ArrayList<int[]> unmatched;
+    private int file1_size;
+    private int file2_size;
+
+    public LineComparator(ArrayList<String> f1, ArrayList<String> f2){
+        file1 = f1;
+        file2 = f2;
+        file1_size = f1.size();
+        file2_size = f2.size();
+        matched = new ArrayList<int[]>();
+        unmatched = new ArrayList<int[]>();
+    }
+
+    public ArrayList<int[]> getMatched(){
+        return matched;
+    }
+
     //compare function
     //accepts two arraylist. Each arrayList represents the lines form each file to compare
     //compares, stores and returns results in an arraylist of pairs of integers (stored as int[])
