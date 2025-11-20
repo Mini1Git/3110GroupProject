@@ -4,10 +4,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 public class Output {
     //loops through arrayList filled w arrays of two ints (pair of ints)
-    //prints results on output.txt file
+    //prints results on output.xml file
 
     public static void writeToFile(ArrayList<int[]> pairs){
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("output.txt"))){
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("output.xml"))){
 
             //loop through each element in arrayList
             for (int[] pair : pairs){
