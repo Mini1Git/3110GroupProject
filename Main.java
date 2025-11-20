@@ -19,7 +19,9 @@ public class Main {
         ArrayList<String> fileList2 = file2.listConverter();
         
         //comparison
-        ArrayList<int []> compResults = LineComparator.compare(fileList1, fileList2);
+        LineComparator comparator = new LineComparator(fileList1, fileList2);
+        comparator.compare();
+        ArrayList<int []> compResults = comparator.getMatched();
 
         //write to file
         Output.writeToFile(compResults);
