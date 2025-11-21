@@ -37,9 +37,9 @@ public class MyReader {
         }
       } 
       catch (FileNotFoundException e) {
-        System.out.println("An error occurred.");
+        this.filename = null;
          // e.printStackTrace();
-        
+        fileList = null;
       }
 
         return fileList;
@@ -63,11 +63,17 @@ public class MyReader {
         }
       } 
       catch (FileNotFoundException e) {
+
         System.out.println("An error occurred.");
         // e.printStackTrace();
       }
 
         return fileList;
+    }
+
+    public String getFileName()
+    {
+      return this.filename;
     }
     
     

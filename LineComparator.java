@@ -11,6 +11,7 @@ public class LineComparator {
     private int file1_size;
     private int file2_size;
 
+    //accepts two arraylist. Each arrayList represents the lines form each file to compare
     public LineComparator(ArrayList<String> f1, ArrayList<String> f2){
         file1 = f1;
         file2 = f2;
@@ -26,13 +27,12 @@ public class LineComparator {
     }
 
     //compare function
-    //accepts two arraylist. Each arrayList represents the lines form each file to compare
-    //compares, stores and returns results in an arraylist of pairs of integers (stored as int[])
     public void compare(){
         unix_diff();
+        //similarity() //hasn't been implemented yet
 
     }
-
+    //compares, stores and returns results in an arraylist of pairs of integers (stored as int[]) gets matched and unmatched
     public void unix_diff(){
 
         //a nested for loop to comapre each line from each file to check for matching string contents
@@ -46,8 +46,9 @@ public class LineComparator {
                 if(file1.get(i).equals(file2.get(j))){
                     //if the string content from file 1 and 2 match, add the line numbers to the results
                     matched.add(new int[]{i, j});
-                    unmatched1.set(i, "");
-                    unmatched2.set(j, "");
+                    unmatched1.set(i, ""); //if a match has been found removes it from unmatched
+                    unmatched2.set(j, ""); 
+                    break;
                 }
 
             }
