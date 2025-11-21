@@ -6,7 +6,8 @@ public class LineComparator {
     private ArrayList<String> file1;
     private ArrayList<String> file2;
     private ArrayList<int[]> matched;
-    private ArrayList<int[]> unmatched;
+    private ArrayList<String> unmatched1;
+    private ArrayList<String> unmatched2;
     private int file1_size;
     private int file2_size;
 
@@ -16,7 +17,8 @@ public class LineComparator {
         file1_size = f1.size();
         file2_size = f2.size();
         matched = new ArrayList<int[]>();
-        unmatched = new ArrayList<int[]>();
+        unmatched1 = f1;
+        unmatched2 = f2;
     }
 
     public ArrayList<int[]> getMatched(){
@@ -27,8 +29,6 @@ public class LineComparator {
     //accepts two arraylist. Each arrayList represents the lines form each file to compare
     //compares, stores and returns results in an arraylist of pairs of integers (stored as int[])
     public void compare(){
-        //creates the result arraylist
-        //ArrayList<int[]> results = new ArrayList<int[]>();
         unix_diff();
         
 
