@@ -17,8 +17,8 @@ public class LineComparator {
         file1_size = f1.size();
         file2_size = f2.size();
         matched = new ArrayList<int[]>();
-        unmatched1 = f1;
-        unmatched2 = f2;
+        unmatched1 = new ArrayList(f1);
+        unmatched2 = new ArrayList(f2);
     }
 
     public ArrayList<int[]> getMatched(){
@@ -30,7 +30,6 @@ public class LineComparator {
     //compares, stores and returns results in an arraylist of pairs of integers (stored as int[])
     public void compare(){
         unix_diff();
-        
 
     }
 
@@ -47,6 +46,8 @@ public class LineComparator {
                 if(file1.get(i).equals(file2.get(j))){
                     //if the string content from file 1 and 2 match, add the line numbers to the results
                     matched.add(new int[]{i, j});
+                    unmatched1.set(i, null);
+                    unmatched2.set(j, null);
                 }
 
             }
