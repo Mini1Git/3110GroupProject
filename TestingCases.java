@@ -21,9 +21,9 @@ public class TestingCases {
         ArrayList<int[]> expectedResults = new ArrayList<int[]>();
         //matches
         int[] matchWilson = new int[]{1,1};
-        int[] matchLiana = new int[]{2,2};
-        int[] matchDaniel = new int[]{4,6};
-        int[] matchTyler = new int[]{5,4};
+        int[] matchLiana = new int[]{2,3};
+        int[] matchDaniel = new int[]{4,7};
+        int[] matchTyler = new int[]{5,5};
 
         expectedResults.add(matchWilson);
         expectedResults.add(matchLiana);
