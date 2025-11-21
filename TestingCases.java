@@ -12,7 +12,10 @@ public class TestingCases {
         MyReader file1 = new MyReader("filename.txt");
         MyReader file2 = new MyReader("filename2.txt");
 
-        ArrayList<int[]> results = LineComparator.compare(file1.listConverter(), file2.listConverter());
+        LineComparator comparator = new LineComparator(file1.listConverter(), file2.listConverter());
+        comparator.compare();
+        ArrayList<int []> results = comparator.getMatched();
+        //ArrayList<int[]> results = LineComparator.compare(file1.listConverter(), file2.listConverter());
         //The result should be an array of all matches? like, ex:{{1,2}, {4.7}....}
         //actual result should be [{0,0}, {1,1}, {3,5}, {4,3}] // one name got removed.
         ArrayList<int[]> expectedResults = new ArrayList<int[]>();
