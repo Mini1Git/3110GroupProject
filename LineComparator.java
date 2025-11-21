@@ -46,8 +46,8 @@ public class LineComparator {
                 if(file1.get(i).equals(file2.get(j))){
                     //if the string content from file 1 and 2 match, add the line numbers to the results
                     matched.add(new int[]{i, j});
-                    unmatched1.set(i, null);
-                    unmatched2.set(j, null);
+                    unmatched1.set(i, "");
+                    unmatched2.set(j, "");
                 }
 
             }
