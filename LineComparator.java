@@ -122,7 +122,6 @@ public class LineComparator {
                 if(finalDiff <= maxDiff){
                     matched.add(new int[]{unmatched1.get(i), unmatched2.get(j)});
                 }
-                System.out.println(finalDiff);
             }
         }
     }
@@ -149,5 +148,6 @@ public class LineComparator {
         System.out.println(unmatched2);
     }
 }
+
 
 
