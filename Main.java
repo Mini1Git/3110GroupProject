@@ -7,7 +7,7 @@ public class Main {
     public static void main(String [] args)
     {
         Scanner input = new Scanner(System.in);
-        
+
         try {
             String fileName1 = input.nextLine(); //taking user input for file name
             MyReader file1 = new MyReader(fileName1);
@@ -26,10 +26,10 @@ public class Main {
 
             //write to file
             Output.writeToFile(compResults);
-        } 
+        }
         catch (FileNotFoundException e) {
-            System.err.println("File canniot be found");
-        }  
+            System.err.println("File cannot be found");
+        }
 
         input.close();
     }

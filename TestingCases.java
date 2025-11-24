@@ -33,7 +33,7 @@ public class TestingCases {
         for (int i = 0; i < 4; i++){
             assertArrayEquals(expectedResults.get(i), results.get(i));
         }
-       
+
     }
 
 }
