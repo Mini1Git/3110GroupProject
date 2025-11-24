@@ -86,7 +86,6 @@ public class LineComparator {
             for (int j = 0; j < unmatched2.size(); j++) {
                 //contentDiff stores the normalized levenshtein score of the current line to check
                 double contentDiff = normalizedLD(file1.get(unmatched1.get(i)), file2.get(unmatched2.get(j)));
-                System.out.println(contentDiff);
 
                 //contextDiff stores levenshtein distance for the surrounding lines
                 double contextDiff = 0;
@@ -148,6 +147,7 @@ public class LineComparator {
         System.out.println(unmatched2);
     }
 }
+
 
 
 
