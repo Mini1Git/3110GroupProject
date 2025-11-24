@@ -73,7 +73,7 @@ public class LineComparator {
     //compares unmatched lines from unix diff and uses Cosine Similarity and Levenstein Distance to get similarity score
     // lines with high similarity scores are matched and put into result array
     public void similarityDiff() {
-        testPrints();
+        //testPrints();
 
         //this is the maxDiff value, if the similarity of two strings is below maxDiff, it will be matched
         //this value is adjustable increase or decrease max difference acceptability
@@ -149,4 +149,5 @@ public class LineComparator {
         System.out.println(unmatched2);
     }
 }
+
 
