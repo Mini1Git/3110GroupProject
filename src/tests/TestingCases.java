@@ -23,7 +23,7 @@ public class TestingCases {
             //we should prob skip absolute matches for test cases.
 
             int x = pair[0];
-            int y = pair[1];
+            int y = pair[1]; 
             //basically, input the range of X, x being first file line range.
             if (x >=114 && x <= 134){
                 System.out.println("First File: "+ x + " Second File: " + y);
