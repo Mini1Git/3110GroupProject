@@ -10,9 +10,9 @@ public class Main {
 
         try {
             String fileName1 = input.nextLine(); //taking user input for file name
-            MyReader file1 = new MyReader(fileName1);
-            ArrayList<String> fileList1 = file1.listConverter();
-            if(fileList1==null)
+            MyReader file1 = new MyReader(fileName1); //Takes in the file name and sets it as string name to use for listConverter().
+            ArrayList<String> fileList1 = file1.listConverter(); // converts the file to array of strings
+            if(fileList1==null) // if the list is null, altho wouldnt this be handled in MyReader class?
                 throw new FileNotFoundException();
             String fileName2 = input.nextLine(); //taking user input for file name
             MyReader file2 = new MyReader(fileName2);
