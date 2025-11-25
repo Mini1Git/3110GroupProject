@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 //import apache text library's levenshtein function as we will use it for similarity diff
 import org.apache.commons.text.similarity.LevenshteinDistance;
+import java.util.HashSet;
 //Line Comparator class
 
 public class LineComparator {
@@ -12,6 +13,7 @@ public class LineComparator {
     private ArrayList<Integer> unmatched2 = new ArrayList<Integer>();
     private int file1_size;
     private int file2_size;
+    HashSet<Integer> matchedLines = new HashSet<>();
 
     //accepts two arraylist. Each arrayList represents the lines form each file to compare
     public LineComparator(ArrayList<String> f1, ArrayList<String> f2) {
@@ -56,11 +58,12 @@ public class LineComparator {
                 continue; //skiping the empty strings
             for (int j = 1; j < this.file2_size; j++) {
 
-                if (file2.get(j).trim().isEmpty())
-                    continue; //skiping the empty strings
+                if (file2.get(j).trim().isEmpty() || matchedLines.contains(j))
+                    continue; //skiping the empty strings or lines that are already matched
                 if (file1.get(i).equals(file2.get(j))) {
                     //if the string content from file 1 and 2 match, add the line numbers to the results
                     matched.add(new int[]{i, j});
+                    matchedLines.add(j);
                     unmatched1.remove((Integer) i); //if a match has been found removes it from unmatched
                     unmatched2.remove((Integer) j);
                     break;
@@ -84,6 +87,11 @@ public class LineComparator {
         //if the levenshtein distance of two lines is less than maxDiff (adjustable), then we add it to matched array
         for(int i = 0; i < unmatched1.size(); i++) {
             for (int j = 0; j < unmatched2.size(); j++) {
+                //this if statement prevents dupes by skipping lines that are already matched
+                if(matchedLines.contains(j)){
+                    continue;
+                }
+
                 //contentDiff stores the normalized levenshtein score of the current line to check
                 double contentDiff = normalizedLD(file1.get(unmatched1.get(i)), file2.get(unmatched2.get(j)));
 
@@ -120,6 +128,8 @@ public class LineComparator {
                 //checks if the final score is less the maxDiff threshold, and if it is, we match it
                 if(finalDiff <= maxDiff){
                     matched.add(new int[]{unmatched1.get(i), unmatched2.get(j)});
+                    matchedLines.add(unmatched2.get(j));
+                    break;
                 }
             }
         }
