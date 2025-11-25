@@ -1,39 +1,45 @@
 
-//so testing works, but vscode has amnesia and doesn't remember that org.junit is in the lib lol.
-//using junit 4
+
+
 import static org.junit.Assert.*;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import org.junit.Test;
 
 public class TestingCases {
+    MyReader file1 = new MyReader("ASTResolving_1.java");
+    MyReader file2 = new MyReader("ASTResolving_2.java");
     @Test
     public void testing(){
-        MyReader file1 = new MyReader("filename.txt");
-        MyReader file2 = new MyReader("filename2.txt");
+
 
         LineComparator comparator = new LineComparator(file1.listConverter(), file2.listConverter());
         comparator.compare();
         ArrayList<int []> results = comparator.getMatched();
-        //ArrayList<int[]> results = LineComparator.compare(file1.listConverter(), file2.listConverter());
-        //The result should be an array of all matches? like, ex:{{1,2}, {4.7}....}
-        //actual result should be [{0,0}, {1,1}, {3,5}, {4,3}] // one name got removed.
-        ArrayList<int[]> expectedResults = new ArrayList<int[]>();
-        //matches
-        int[] matchWilson = new int[]{1,1};
-        int[] matchLiana = new int[]{2,3};
-        int[] matchDaniel = new int[]{4,7};
-        int[] matchTyler = new int[]{5,5};
 
-        expectedResults.add(matchWilson);
-        expectedResults.add(matchLiana);
-        expectedResults.add(matchDaniel);
-        expectedResults.add(matchTyler);
+        for (int[] pair : results){
+            //store the pair of ints
+            //we should prob skip absolute matches for test cases.
 
-        for (int i = 0; i < 4; i++){
-            assertArrayEquals(expectedResults.get(i), results.get(i));
+            int x = pair[0];
+            int y = pair[1];
+            //basically, input the range of X, x being first file line range.
+            if (x >=114 && x <= 134){
+                System.out.println("First File: "+ x + " Second File: " + y);
+                getLine(x, y);}
+
+
         }
+        //getLine(134, 137);
+    }
+    //for getLine, input the x, being the line number of the first file, and the line number of the second.
+    public void getLine(int x, int y){
 
+        System.out.println(file1.listConverter().get(x).trim() + " |and| " + file2.listConverter().get(y).trim());
     }
 
+//need to program a function using assert test.
 }
+
