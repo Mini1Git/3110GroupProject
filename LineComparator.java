@@ -13,7 +13,8 @@ public class LineComparator {
     private ArrayList<Integer> unmatched2 = new ArrayList<Integer>();
     private int file1_size;
     private int file2_size;
-    HashSet<Integer> matchedLines = new HashSet<>();
+    HashSet<Integer> matchedLines1 = new HashSet<>();
+    HashSet<Integer> matchedLines2 = new HashSet<>();
 
     //accepts two arraylist. Each arrayList represents the lines form each file to compare
     public LineComparator(ArrayList<String> f1, ArrayList<String> f2) {
@@ -35,7 +36,6 @@ public class LineComparator {
                 unmatched2.add(i);
             }
         }
-        //testPrints();
     }
 
     public ArrayList<int[]> getMatched() {
@@ -46,7 +46,7 @@ public class LineComparator {
     public void compare() {
         unix_diff();    //matches identical lines
         similarityDiff(); //matches similar lines
-        //lineSplit()   //matches line splits (not implemented yet)
+        lineSplit();   //matches line splits (not implemented yet)
     }
 
     //compares, stores and returns results in an arraylist of pairs of integers (stored as int[]) gets matched and unmatched
@@ -58,12 +58,13 @@ public class LineComparator {
                 continue; //skiping the empty strings
             for (int j = 1; j < this.file2_size; j++) {
 
-                if (file2.get(j).trim().isEmpty() || matchedLines.contains(j))
+                if (file2.get(j).trim().isEmpty() || matchedLines2.contains(j))
                     continue; //skiping the empty strings or lines that are already matched
                 if (file1.get(i).equals(file2.get(j))) {
                     //if the string content from file 1 and 2 match, add the line numbers to the results
                     matched.add(new int[]{i, j});
-                    matchedLines.add(j);
+                    matchedLines1.add(i);
+                    matchedLines2.add(j);
                     unmatched1.remove((Integer) i); //if a match has been found removes it from unmatched
                     unmatched2.remove((Integer) j);
                     break;
@@ -76,19 +77,25 @@ public class LineComparator {
     //compares unmatched lines from unix diff and uses Cosine Similarity and Levenstein Distance to get similarity score
     // lines with high similarity scores are matched and put into result array
     public void similarityDiff() {
-        //testPrints();
-
         //this is the maxDiff value, if the similarity of two strings is below maxDiff, it will be matched
         //this value is adjustable increase or decrease max difference acceptability
         double maxDiff = 0.15;
 
         //a nested for loop to compare each line from the unmatched arrays, similar to unix diff
         //but this time, we won't compare for identical lines, but use levenshtein to compare similarity
-        //if the levenshtein distance of two lines is less than maxDiff (adjustable), then we add it to matched array
+        //we add the best similarity score match (thats also under the threshold) to matched array
         for(int i = 0; i < unmatched1.size(); i++) {
+            //skip empty lines
+            if (file1.get(unmatched1.get(i)).trim().isEmpty())
+                continue; //skiping the empty strings
+
+            //keeps track of the best match and best similarity score
+            int bestMatchLine = -1;
+            double bestMatchScore = 10.0;
+
             for (int j = 0; j < unmatched2.size(); j++) {
-                //this if statement prevents dupes by skipping lines that are already matched
-                if(matchedLines.contains(j)){
+                //this if statement prevents dupes by skipping lines that are already matched and skips empty lines
+                if(matchedLines2.contains(j) || file2.get(unmatched1.get(j)).trim().isEmpty()){
                     continue;
                 }
 
@@ -125,12 +132,45 @@ public class LineComparator {
                 //recommended finalDiff ratio of contextDiff/contentDiff in the project instruction
                 double finalDiff = (contentDiff * 0.6) + (contextDiff * 0.4);
 
-                //checks if the final score is less the maxDiff threshold, and if it is, we match it
-                if(finalDiff <= maxDiff){
-                    matched.add(new int[]{unmatched1.get(i), unmatched2.get(j)});
-                    matchedLines.add(unmatched2.get(j));
-                    break;
+                //checks if the final score is less the maxDiff threshold and if its better then the current best match
+                if(finalDiff <= maxDiff && finalDiff < bestMatchScore){
+                    bestMatchScore = finalDiff;
+                    bestMatchLine = j;
                 }
+            }
+
+            //now we add the best match if it exists
+            if(bestMatchLine >= 0){
+                matched.add(new int[]{unmatched1.get(i), unmatched2.get(bestMatchLine)});
+                matchedLines1.add(unmatched1.get(i));
+                matchedLines2.add(unmatched2.get(bestMatchLine));
+            }
+
+        }
+    }
+
+    //check for line split matches from the remaining unmatched lines
+    public void lineSplit(){
+        //in the similarityDiff function, we didn't remove from the unmatched arrays
+        //so here, we will remove all the entries matched in similarity diff
+        for(int i = unmatched1.size() - 1; i >= 0; i--) {
+            if(matchedLines1.contains(unmatched1.get(i))){
+                unmatched1.remove(i);
+            }
+        }
+        for(int i = unmatched2.size() - 1; i >= 0; i--) {
+            if(matchedLines2.contains(unmatched2.get(i))){
+                unmatched2.remove(i);
+            }
+        }
+        
+        double maxDiff = 0.15;
+
+        //loop thru the unmatched arrays again
+        for(int i = 0; i < unmatched1.size(); i++) {
+            for (int j = 0; j < unmatched2.size(); j++) {
+                double currentScore = normalizedLD(file1.get(unmatched1.get(i)), file2.get(unmatched2.get(j)));
+
             }
         }
     }
@@ -138,7 +178,7 @@ public class LineComparator {
     //this is the normalized levenshtein distance function
     //takes two strings and calcs the Levenshrein distance using apache's text library
     //we also normalize this score by the added length of string1 and string2
-    // we normalize because longer strings can result in higher scores, even if the string is more similar then shorter srrings
+    // we normalize because longer strings can result in higher scores, even if the string is more similar then shorter strings
     // (ex: abc and xyz have LD of 3, while teststring12345 and teststringabcde have LD of 5)
     public double normalizedLD(String text1, String text2){
         LevenshteinDistance diff = new LevenshteinDistance();
