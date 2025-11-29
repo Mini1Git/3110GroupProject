@@ -25,7 +25,7 @@ public class Main {
             ArrayList<int []> compResults = comparator.getMatched();
 
             //write to file
-            Output.writeToFile(compResults);
+            Output.writeToFile("src/resources/results.xml",compResults);
         }
         catch (FileNotFoundException e) {
             System.err.println("File cannot be found");
