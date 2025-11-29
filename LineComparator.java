@@ -155,7 +155,7 @@ public class LineComparator {
 
                 //now we check for line splitting
                 //if the line after the current line isnt unmatched, it means it's arleady matched by another index and thus isn't part of the line split
-                while(!matchedLines2.contains(j+lineSplitIndex)){
+                while(!matchedLines2.contains(j+lineSplitIndex) && j + lineSplitIndex < file2_size){
                     //we concatinate the next line with our currentLine and then check LD for the new concat string
                     currentLineString = currentLineString + file2.get(j+lineSplitIndex);
                     double nextScore = normalizedLD(file1.get(i), currentLineString);
