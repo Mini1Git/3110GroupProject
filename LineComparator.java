@@ -13,12 +13,10 @@ public class LineComparator {
     private ArrayList<String> file1;
     private ArrayList<String> file2;
     private ArrayList<int[]> matched;
-    private ArrayList<Integer> unmatched1 = new ArrayList<Integer>();
-    private ArrayList<Integer> unmatched2 = new ArrayList<Integer>();
     private int file1_size;
     private int file2_size;
-    HashSet<Integer> matchedLines1 = new HashSet<>();
-    HashSet<Integer> matchedLines2 = new HashSet<>();
+    HashSet<Integer> matchedLines1;
+    HashSet<Integer> matchedLines2;
 
     //accepts two arraylist. Each arrayList represents the lines form each file to compare
     public LineComparator(ArrayList<String> f1, ArrayList<String> f2) {
@@ -27,19 +25,8 @@ public class LineComparator {
         file1_size = f1.size();
         file2_size = f2.size();
         matched = new ArrayList<int[]>();
-
-        //fill the unmatched arrays with all line numbers (that aren't empty)
-        //matched line numbers will be removed later, leaving only the unmatched
-        for (int i = 1; i < file1.size(); i++) {
-            if(!file1.get(i).isEmpty()){
-                unmatched1.add(i);
-            }
-        }
-        for (int i = 1; i < file2.size(); i++) {
-            if(!file2.get(i).isEmpty()){
-                unmatched2.add(i);
-            }
-        }
+        matchedLines1 = new HashSet<>();
+        matchedLines2 = new HashSet<>();
     }
 
     public ArrayList<int[]> getMatched() {
@@ -50,27 +37,25 @@ public class LineComparator {
     public void compare() {
         unix_diff();    //matches identical lines
         similarityDiff(); //matches similar lines
-        lineSplit();   //matches line splits (not implemented yet)
+        lineSplit();   //matches line splits
     }
 
     //compares, stores and returns results in an arraylist of pairs of integers (stored as int[]) gets matched and unmatched
     public void unix_diff() {
 
-        //a nested for loop to comapre each line from each file to check for matching string contents
+        //a nested for loop to compare each line from each file to check for matching string contents
         for (int i = 1; i < this.file1_size; i++) {
             if (file1.get(i).trim().isEmpty())
                 continue; //skiping the empty strings
             for (int j = 1; j < this.file2_size; j++) {
-
                 if (file2.get(j).trim().isEmpty() || matchedLines2.contains(j))
                     continue; //skiping the empty strings or lines that are already matched
+
                 if (file1.get(i).equals(file2.get(j))) {
                     //if the string content from file 1 and 2 match, add the line numbers to the results
                     matched.add(new int[]{i, j});
                     matchedLines1.add(i);
                     matchedLines2.add(j);
-                    unmatched1.remove((Integer) i); //if a match has been found removes it from unmatched
-                    unmatched2.remove((Integer) j);
                     break;
                 }
 
@@ -84,45 +69,45 @@ public class LineComparator {
         //a nested for loop to compare each line from the unmatched arrays, similar to unix diff
         //but this time, we won't compare for identical lines, but use levenshtein to compare similarity
         //we add the best similarity score match (thats also under the threshold) to matched array
-        for(int i = 0; i < unmatched1.size(); i++) {
+        for(int i = 0; i < file1_size; i++) {
             //skip empty lines
-            if (file1.get(unmatched1.get(i)).trim().isEmpty())
+            if (file1.get(i).trim().isEmpty())
                 continue; //skiping the empty strings
 
             //keeps track of the best match and best similarity score
             int bestMatchLine = -1;
             double bestMatchScore = 10.0;
 
-            for (int j = 0; j < unmatched2.size(); j++) {
+            for (int j = 0; j < file2_size; j++) {
                 //this if statement prevents dupes by skipping lines that are already matched and skips empty lines
-                if(matchedLines2.contains(j) || file2.get(unmatched2.get(j)).trim().isEmpty()){
+                if(matchedLines2.contains(j) || file2.get(j).trim().isEmpty()){
                     continue;
                 }
 
                 //contentDiff stores the normalized levenshtein score of the current line to check
-                double contentDiff = normalizedLD(file1.get(unmatched1.get(i)), file2.get(unmatched2.get(j)));
+                double contentDiff = normalizedLD(file1.get(j), file2.get(j));
 
                 //contextDiff stores levenshtein distance for the surrounding lines
                 double contextDiff = 0;
 
                 //here, we're going to calc the context score by doing leven distance for the surrounding lines
-                int prevLine1 = unmatched1.get(i) - 1;
-                int prevLine2 = unmatched2.get(j) - 1;
-                int nextLine1 = unmatched1.get(i) + 1;
-                int nextLine2 = unmatched2.get(j) + 1;
+                int prevLine1 = i - 1;
+                int prevLine2 = j - 1;
+                int nextLine1 = i + 1;
+                int nextLine2 = j + 1;
                 //if the line we're trying to get context of, is either the first or last line
                 //we just set prev/ next line to the current line num
-                if(unmatched1.get(i) <= 1){
-                    prevLine1 = unmatched1.get(i);
+                if(i <= 1){
+                    prevLine1 = i;
                 }
-                if(unmatched2.get(j) <= 1){
-                    prevLine2 = unmatched2.get(j);
+                if(j <= 1){
+                    prevLine2 = j;
                 }
-                if(unmatched1.get(i) >= file1_size - 1){
-                    nextLine1 = unmatched1.get(i);
+                if(i >= file1_size - 1){
+                    nextLine1 = i;
                 }
-                if(unmatched2.get(j) >= file2_size - 1){
-                    nextLine2 = unmatched2.get(j);
+                if(j >= file2_size - 1){
+                    nextLine2 = j;
                 }
 
                 //calcs the LD of previous line and next line, adds it and divdes by 2 to get the average
@@ -141,9 +126,9 @@ public class LineComparator {
 
             //now we add the best match if it exists
             if(bestMatchLine >= 0){
-                matched.add(new int[]{unmatched1.get(i), unmatched2.get(bestMatchLine)});
-                matchedLines1.add(unmatched1.get(i));
-                matchedLines2.add(unmatched2.get(bestMatchLine));
+                matched.add(new int[]{i, bestMatchLine});
+                matchedLines1.add(i);
+                matchedLines2.add(bestMatchLine);
             }
 
         }
@@ -151,37 +136,29 @@ public class LineComparator {
 
     //check for line split matches from the remaining unmatched lines
     public void lineSplit(){
-        //in the similarityDiff function, we didn't remove from the unmatched2 array so we remove them here
-        //(note, i dont remove from unmatched1 as file1 lines can match to many of file2 lines)
-        for(int i = unmatched2.size() - 1; i >= 0; i--) {
-            if(matchedLines2.contains(unmatched2.get(i))){
-                unmatched2.remove(i);
-            }
-        }
-
         //loop thru the unmatched arrays again
-        for(int i = 0; i < unmatched1.size(); i++) {
+        for(int i = 0; i < file1_size; i++) {
             //skip empty lines
-            if (file1.get(unmatched1.get(i)).trim().isEmpty())
+            if (file1.get(i).trim().isEmpty())
                 continue;
 
-            for (int j = 0; j < unmatched2.size(); j++) {
+            for (int j = 0; j < file2_size; j++) {
                 //this if statement prevents dupes by skipping lines that are already matched and skips empty lines
-                if(matchedLines2.contains(j) || file2.get(unmatched2.get(j)).trim().isEmpty()){
+                if(matchedLines2.contains(j) || file2.get(j).trim().isEmpty()){
                     continue;
                 }
 
                 //we get our starting scores and data
-                double currentScore = normalizedLD(file1.get(unmatched1.get(i)), file2.get(unmatched2.get(j)));
-                String currentLineString = file2.get(unmatched2.get(j));
+                double currentScore = normalizedLD(file1.get(i), file2.get(j));
+                String currentLineString = file2.get(j);
                 int lineSplitIndex = 1;
 
                 //now we check for line splitting
                 //if the line after the current line isnt unmatched, it means it's arleady matched by another index and thus isn't part of the line split
-                while(unmatched2.contains(unmatched2.get(j)+lineSplitIndex)){
+                while(!matchedLines2.contains(j+lineSplitIndex)){
                     //we concatinate the next line with our currentLine and then check LD for the new concat string
-                    currentLineString = currentLineString + file2.get(unmatched2.get(j)+lineSplitIndex);
-                    double nextScore = normalizedLD(file1.get(unmatched1.get(i)), currentLineString);
+                    currentLineString = currentLineString + file2.get(j+lineSplitIndex);
+                    double nextScore = normalizedLD(file1.get(i), currentLineString);
                     if(nextScore > currentScore){
                         //once concatinating the lines stop decreasing the ld, we stop checking for line split
                         break;
@@ -195,9 +172,9 @@ public class LineComparator {
                 //now, if the score of the above loop is less then maxDiff, we add all lines to matched!
                 if(currentScore <= maxDiff) {
                     for (int x = 0; x < lineSplitIndex; x++) {
-                        matched.add(new int[]{unmatched1.get(i), unmatched2.get(j)+ x});
-                        matchedLines1.add(unmatched1.get(i));
-                        matchedLines2.add(unmatched2.get(j) + x);
+                        matched.add(new int[]{i, j+ x});
+                        matchedLines1.add(i);
+                        matchedLines2.add(j + x);
                     }
                 }
             }
@@ -221,9 +198,9 @@ public class LineComparator {
         System.out.println(file1);
         System.out.println(file2);
 
-        System.out.println("Unmatched arrays (line numbers):");
-        System.out.println(unmatched1);
-        System.out.println(unmatched2);
+        System.out.println("Matched lines (line numbers):");
+        System.out.println(matchedLines1);
+        System.out.println(matchedLines2);
     }
 }
 
