@@ -6,6 +6,10 @@ import java.util.HashSet;
 
 public class LineComparator {
 
+    //this is the maxDiff value, if the similarity of two strings is below maxDiff, it will be matched
+    //this value is adjustable increase or decrease max difference acceptability
+    double maxDiff = 0.15;
+
     private ArrayList<String> file1;
     private ArrayList<String> file2;
     private ArrayList<int[]> matched;
@@ -77,10 +81,6 @@ public class LineComparator {
     //compares unmatched lines from unix diff and uses Cosine Similarity and Levenstein Distance to get similarity score
     // lines with high similarity scores are matched and put into result array
     public void similarityDiff() {
-        //this is the maxDiff value, if the similarity of two strings is below maxDiff, it will be matched
-        //this value is adjustable increase or decrease max difference acceptability
-        double maxDiff = 0.15;
-
         //a nested for loop to compare each line from the unmatched arrays, similar to unix diff
         //but this time, we won't compare for identical lines, but use levenshtein to compare similarity
         //we add the best similarity score match (thats also under the threshold) to matched array
@@ -95,7 +95,7 @@ public class LineComparator {
 
             for (int j = 0; j < unmatched2.size(); j++) {
                 //this if statement prevents dupes by skipping lines that are already matched and skips empty lines
-                if(matchedLines2.contains(j) || file2.get(unmatched1.get(j)).trim().isEmpty()){
+                if(matchedLines2.contains(j) || file2.get(unmatched2.get(j)).trim().isEmpty()){
                     continue;
                 }
 
@@ -151,26 +151,55 @@ public class LineComparator {
 
     //check for line split matches from the remaining unmatched lines
     public void lineSplit(){
-        //in the similarityDiff function, we didn't remove from the unmatched arrays
-        //so here, we will remove all the entries matched in similarity diff
-        for(int i = unmatched1.size() - 1; i >= 0; i--) {
-            if(matchedLines1.contains(unmatched1.get(i))){
-                unmatched1.remove(i);
-            }
-        }
+        //in the similarityDiff function, we didn't remove from the unmatched2 array so we remove them here
+        //(note, i dont remove from unmatched1 as file1 lines can match to many of file2 lines)
         for(int i = unmatched2.size() - 1; i >= 0; i--) {
             if(matchedLines2.contains(unmatched2.get(i))){
                 unmatched2.remove(i);
             }
         }
-        
-        double maxDiff = 0.15;
 
         //loop thru the unmatched arrays again
         for(int i = 0; i < unmatched1.size(); i++) {
-            for (int j = 0; j < unmatched2.size(); j++) {
-                double currentScore = normalizedLD(file1.get(unmatched1.get(i)), file2.get(unmatched2.get(j)));
+            //skip empty lines
+            if (file1.get(unmatched1.get(i)).trim().isEmpty())
+                continue;
 
+            for (int j = 0; j < unmatched2.size(); j++) {
+                //this if statement prevents dupes by skipping lines that are already matched and skips empty lines
+                if(matchedLines2.contains(j) || file2.get(unmatched2.get(j)).trim().isEmpty()){
+                    continue;
+                }
+
+                //we get our starting scores and data
+                double currentScore = normalizedLD(file1.get(unmatched1.get(i)), file2.get(unmatched2.get(j)));
+                String currentLineString = file2.get(unmatched2.get(j));
+                int lineSplitIndex = 1;
+
+                //now we check for line splitting
+                //if the line after the current line isnt unmatched, it means it's arleady matched by another index and thus isn't part of the line split
+                while(unmatched2.contains(unmatched2.get(j)+lineSplitIndex)){
+                    //we concatinate the next line with our currentLine and then check LD for the new concat string
+                    currentLineString = currentLineString + file2.get(unmatched2.get(j)+lineSplitIndex);
+                    double nextScore = normalizedLD(file1.get(unmatched1.get(i)), currentLineString);
+                    if(nextScore > currentScore){
+                        //once concatinating the lines stop decreasing the ld, we stop checking for line split
+                        break;
+                    }
+                    else{
+                        currentScore = nextScore;
+                        lineSplitIndex += 1;
+                    }
+                }
+
+                //now, if the score of the above loop is less then maxDiff, we add all lines to matched!
+                if(currentScore <= maxDiff) {
+                    for (int x = 0; x < lineSplitIndex; x++) {
+                        matched.add(new int[]{unmatched1.get(i), unmatched2.get(j)+ x});
+                        matchedLines1.add(unmatched1.get(i));
+                        matchedLines2.add(unmatched2.get(j) + x);
+                    }
+                }
             }
         }
     }
