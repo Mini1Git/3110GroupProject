@@ -1,9 +1,9 @@
 
 
 import static org.junit.Assert.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+
+import java.util.*;
+
 import org.w3c.dom.*;
 import javax.xml.parsers.*;
 import java.io.File;
@@ -12,9 +12,9 @@ import org.junit.Test;
 
 public class TestingCases {
     String path = "src/resources/"; // just change this if you need to.
-    MyReader file1 = new MyReader(path +"ASTResolving_1.java");
-    MyReader file2 = new MyReader(path +"ASTResolving_2.java");
-    String xmlFile = path + "ASTResolving.xml";
+    MyReader file1 = new MyReader(path +"GC_1.java");
+    MyReader file2 = new MyReader(path +"GC_2.java");
+    String xmlFile = path + "GC.xml";
     @Test
     public void testing() throws Exception {
         ArrayList<String> fileList1 = file1.listConverter();
@@ -23,41 +23,42 @@ public class TestingCases {
         comparator.compare();
         ArrayList<int []> results = comparator.getMatched();
         List<Integer> range = new ArrayList<>();
+
         try{
-            range = getRange(xmlFile);}
+            if(xmlFile != null){
+                range = getRange(xmlFile);
+            }
+
+        }
         catch(Exception e){
             System.out.println("xml error");
             e.printStackTrace();
         }
-        ArrayList<Integer> yList = new ArrayList<>(); // basically, the "NEW" for our tool.
-        for (int[] pair : results){ //the range should be in the for loop.
+        //System.out.println(results);
+
+
+
+
+        for (int[] pair : results){
             //store the pair of ints
             //we should prob skip absolute matches for test cases.
 
             int x = pair[0];
             int y = pair[1];
+
+
+
+
+
             //basically, input the range of X, x being first file line range.
             //if (x >= range.get(0) && x <= range.get(range.size()-1)){
 
             System.out.println("First File: "+ x + " Second File: " + y);
             getLine(x, y);
 
-            // }
-            //if (x >= range.get(0) && x <= range.get(range.size()-1)){
-
-            System.out.println("First File: "+ x + " Second File: " + y);
-            getLine(x, y);
-
-            // }
-
-
+            //}
         }
-        try {
-            System.out.println("It is " + percentageTest(yList, xmlFile, 2) + "% correct!");
-        }
-        catch(Exception e){
-            System.out.println("Percentage error");
-        }
+
     }
     //for getLine, input the x, being the line number of the first file, and the line number of the second.
     public void getLine(int x, int y){
@@ -90,37 +91,6 @@ public class TestingCases {
         return range;
     }
 
-    public Double percentageTest(ArrayList<Integer> ourListOfY,String xmlFile, int VERSION) throws Exception{
-        List<Integer> correctDataset = new ArrayList<>();
-        File file = new File(xmlFile);
-        DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-        Document doc = dBuilder.parse(file);
-        NodeList versionTagList = doc.getElementsByTagName("VERSION");
-        Element versionNum = (Element) versionTagList.item(1);
-        System.out.println(versionNum.getAttribute("NUMBER"));
-        //got the correct version ^
-        NodeList locationList = versionNum.getElementsByTagName("LOCATION");
-        // got correct list ^
-        //now can iterate through the correct dataset list.
-        for (int i = 0; i < locationList.getLength(); i++){
-            Node node = locationList.item(i);
-            if (node.getNodeType() == Node.ELEMENT_NODE){
-                Element element = (Element) node;
-                int number = Integer.parseInt(element.getAttribute("NEW"));
-                correctDataset.add(number);
-            }
 
-        }
-        int countCorrect = 0;
-        for (int i = 0; i < ourListOfY.size(); i++){
-            if (ourListOfY.get(i).equals(correctDataset.get(i))){
-                countCorrect++;
-            }
-        }
-        double percentage = (double) countCorrect / correctDataset.size();
-
-        return percentage;
-    }
 
 }
