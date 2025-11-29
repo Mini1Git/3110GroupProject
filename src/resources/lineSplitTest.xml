@@ -1,0 +1,58 @@
+<VERSION NUMBER="1" CHECKED="TRUE">
+
+    <!-- ==== ABSOLUTE 1-TO-1 MATCHES ==== -->
+
+    <!-- There's something I'd like to tell you. -->
+    <LOCATION ORIG="7" NEW="12" />
+
+    <!-- We have amazing profs! -->
+    <LOCATION ORIG="8" NEW="14" />
+
+    <!-- We shall eat apples together! -->
+    <LOCATION ORIG="12" NEW="21" />
+
+    <!-- We are the Eaters of Apples. -->
+    <LOCATION ORIG="14" NEW="23" />
+
+    <!-- Fear us Apples! -->
+    <LOCATION ORIG="15" NEW="24" />
+
+    <!-- Fear us! -->
+    <LOCATION ORIG="16" NEW="25" />
+
+    <!-- We shall not let this pass! -->
+    <LOCATION ORIG="17" NEW="26" />
+
+    <!-- ==== SPLIT MATCHES ==== -->
+
+    <!-- Hey my name is Apel! Nice to meet you Bob. -->
+    <LOCATION ORIG="1" NEW="1" />
+    <LOCATION ORIG="1" NEW="2" />
+
+    <!-- How is life? -->
+    <LOCATION ORIG="2" NEW="3" />
+    <LOCATION ORIG="2" NEW="4" />
+
+    <!-- That's great to hear bub! -->
+    <LOCATION ORIG="3" NEW="5" />
+    <LOCATION ORIG="3" NEW="6" />
+    <LOCATION ORIG="3" NEW="7" />
+
+    <!-- I figured we might eat together. -->
+    <LOCATION ORIG="5" NEW="9" />
+    <LOCATION ORIG="5" NEW="10" />
+
+    <!-- Amazing Amazing! -->
+    <LOCATION ORIG="9" NEW="15" />
+    <LOCATION ORIG="9" NEW="16" />
+    <LOCATION ORIG="9" NEW="17" />
+
+    <!-- Splitting the apples yeah? -->
+    <LOCATION ORIG="10" NEW="18" />
+    <LOCATION ORIG="10" NEW="19" />
+
+    <!-- Yummy! -->
+    <LOCATION ORIG="19" NEW="28" />
+    <LOCATION ORIG="19" NEW="29" />
+
+</VERSION>
