@@ -4,8 +4,14 @@ import java.util.Scanner;
 import java.util.ArrayList;
 
 public class Main {
-    public static void main(String [] args)
-    {
+    public static void main(String [] args) throws Exception {
+        //realTool();
+        MyReader file1 = new MyReader("src/resources/ASTResolving_1.java");
+        MyReader file2 = new MyReader("src/resources/ASTResolving_2.java");
+        TestingCases.run(file1, file2, null);
+    }
+
+    public static void realTool(){
         Scanner input = new Scanner(System.in);
 
         try {
