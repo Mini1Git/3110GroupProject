@@ -1,0 +1,49 @@
+Line 11: 2 Points
+Instruction: mov ax, 1122h
+Register value of EAX register, after executing line 11.
+12341122
+Explain the content of the EAX register.
+since AX is 16bits, it replaces the last 4 digits with 1122
+each digit is 4 digits
+Line 12: 2 Points
+Instruction: mov bl, al
+Register value of EAX register, after executing line 12.
+12341122
+Explain the content of the EAX register.
+nothing changes but bl is now 22
+Line 13: 2 Points
+Instruction: mov bl, ah
+Register value of EAX register, after executing line 14.
+12341122
+Explain the content of the EAX register.
+bl becomes 11
+Line 14: 2 Points
+Instruction: mov al, 89h
+Register value of EAX register, after executing line 14.
+12341189
+Explain the content of the EAX register.
+changes last two digits cuz 4 bits and al is last 8 right most bits
+Line 15: 4 Points
+Instruction: add al, 10h
+Register value of EAX, after executing line 15:
+12341199
+Show the step of the hexadecimal addition.
+//work
+
+Line 16: 4 Points
+Instruction: sub al, al
+What Register value of EAX, after executing line 15?
+12341100
+Show the step of the hexadecimal subtraction.
+//work
+
+Line 17, 18: 4 Points
+Instruction:
+mov al, 98h
+add al, 89h
+Register value of EAX, after executing line 17 and 18:
+line 17: 12341198
+line 18: //work
+
+Show the step of the hexadecimal addition. 
+//work
