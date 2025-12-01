@@ -1,12 +1,9 @@
 
 
 import java.util.*;
-
 import org.w3c.dom.*;
 import javax.xml.parsers.*;
 import java.io.File;
-
-
 
 public class TestingCases {
 
@@ -105,6 +102,38 @@ public class TestingCases {
         return range;
     }
 
+    public Double percentageTest(ArrayList<Integer> ourListOfY,String xmlFile, int VERSION) throws Exception{
+        List<Integer> correctDataset = new ArrayList<>();
+        File file = new File(xmlFile);
+        DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+        Document doc = dBuilder.parse(file);
+        NodeList versionTagList = doc.getElementsByTagName("VERSION");
+        Element versionNum = (Element) versionTagList.item(1);
+        System.out.println(versionNum.getAttribute("NUMBER"));
+        //got the correct version ^
+        NodeList locationList = versionNum.getElementsByTagName("LOCATION");
+        // got correct list ^
+        //now can iterate through the correct dataset list.
+        for (int i = 0; i < locationList.getLength(); i++){
+            Node node = locationList.item(i);
+            if (node.getNodeType() == Node.ELEMENT_NODE){
+                Element element = (Element) node;
+                int number = Integer.parseInt(element.getAttribute("NEW"));
+                correctDataset.add(number);
+            }
+
+        }
+        int countCorrect = 0;
+        for (int i = 0; i < ourListOfY.size(); i++){
+            if (ourListOfY.get(i).equals(correctDataset.get(i))){
+                countCorrect++;
+            }
+        }
+        double percentage = (double) countCorrect / correctDataset.size();
+
+        return percentage;
+    }
 
 
 }
