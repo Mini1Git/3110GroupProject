@@ -33,8 +33,7 @@ public class TestingCases {
         //System.out.println(results);
 
 
-        int correctCount = 0;
-        int counterSize = 0;
+
 
         for (int[] pair : results){
             //store the pair of ints
@@ -42,7 +41,7 @@ public class TestingCases {
 
             int x = pair[0];
             int y = pair[1];
-            Scanner scanner = new Scanner(System.in);
+
 
 
 
@@ -54,21 +53,11 @@ public class TestingCases {
             System.out.println("First File: "+ x + " Second File: " + y);
             getLine(file1, file2, x, y);
 
-            System.out.println("Correct? (y/n):");
-            String answer = scanner.nextLine();
-                if (answer.equals("y")){
-                    //correct
-                    correctCount++;
-                }
-
-            counterSize++;
-
 
 
             //}
         }
-        double percentage = (double)correctCount / (double)counterSize * 100;
-        System.out.println("Overall percentage: " + percentage);
+        System.out.println(percentageTest(results, xmlFile) + "%");
 
     }
     //for getLine, input the x, being the line number of the first file, and the line number of the second.
@@ -102,14 +91,18 @@ public class TestingCases {
         return range;
     }
 
-    public Double percentageTest(ArrayList<Integer> ourListOfY,String xmlFile, int VERSION) throws Exception{
+    private static double percentageTest(ArrayList<int[]> ourListOfY, String xmlFile) throws Exception{
         List<Integer> correctDataset = new ArrayList<>();
+        List<Integer> correctDataset2 = new ArrayList<>();
+        if (xmlFile == null){
+            return -1;
+        }
         File file = new File(xmlFile);
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
         Document doc = dBuilder.parse(file);
         NodeList versionTagList = doc.getElementsByTagName("VERSION");
-        Element versionNum = (Element) versionTagList.item(1);
+        Element versionNum = (Element) versionTagList.item(0);
         System.out.println(versionNum.getAttribute("NUMBER"));
         //got the correct version ^
         NodeList locationList = versionNum.getElementsByTagName("LOCATION");
@@ -119,21 +112,25 @@ public class TestingCases {
             Node node = locationList.item(i);
             if (node.getNodeType() == Node.ELEMENT_NODE){
                 Element element = (Element) node;
-                int number = Integer.parseInt(element.getAttribute("NEW"));
+                int number = Integer.parseInt(element.getAttribute("ORIG"));
+                int number2 = Integer.parseInt(element.getAttribute("NEW"));
                 correctDataset.add(number);
+                correctDataset2.add(number2);
             }
 
         }
         int countCorrect = 0;
-        for (int i = 0; i < ourListOfY.size(); i++){
-            if (ourListOfY.get(i).equals(correctDataset.get(i))){
+        for (int i = 0; i < correctDataset.size(); i++){
+
+            if (ourListOfY.get(i)[0] == (correctDataset.get(i)) && ourListOfY.get(i)[1] == correctDataset2.get(i)){
                 countCorrect++;
+
             }
         }
-        double percentage = (double) countCorrect / correctDataset.size();
+        double percentage = (double) countCorrect / correctDataset.size() * 100;
 
         return percentage;
     }
-
+// TODO: Sort the XML files (after finishing them) to be in order numbered X. maek a function, to match prof's format.
 
 }

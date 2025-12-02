@@ -6,9 +6,9 @@ import java.util.ArrayList;
 public class Main {
     public static void main(String [] args) throws Exception {
         //realTool();
-        MyReader file1 = new MyReader("src/resources/ASTResolving_1.java");
-        MyReader file2 = new MyReader("src/resources/ASTResolving_2.java");
-        TestingCases.run(file1, file2, null);
+        MyReader file1 = new MyReader("src/resources/testFilesWilson/Test2/lineSplitTest.txt");
+        MyReader file2 = new MyReader("src/resources/testFilesWilson/Test2/lineSplitTest2.txt");
+        TestingCases.run(file1, file2, "src/resources/testFilesWilson/Test2/lineSplitTest.xml");
     }
 
     public static void realTool(){
