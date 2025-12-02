@@ -63,9 +63,6 @@ public class LineComparator {
                 unmatched[1].add(i);
             }
         }
-
-        System.out.println(Arrays.toString(unmatched));
-
         return unmatched;
     }
 
@@ -74,7 +71,6 @@ public class LineComparator {
         unix_diff();    //matches identical lines
         similarityDiff(); //matches similar lines
         lineSplit();   //matches line splits
-        getUnmatched();
     }
 
     //compares, stores and returns results in an arraylist of pairs of integers (stored as int[]) gets matched and unmatched
@@ -240,6 +236,7 @@ public class LineComparator {
         System.out.println(matchedLines2);
     }
 }
+
 
 
 
