@@ -1,6 +1,8 @@
 import java.util.ArrayList;
 //import apache text library's levenshtein function as we will use it for similarity diff
 import org.apache.commons.text.similarity.LevenshteinDistance;
+
+import java.util.Arrays;
 import java.util.HashSet;
 //Line Comparator class
 
@@ -29,8 +31,42 @@ public class LineComparator {
         matchedLines2 = new HashSet<>();
     }
 
+    //returns matched lines
     public ArrayList<int[]> getMatched() {
         return matched;
+    }
+
+    //returns unmatched lines
+    public ArrayList<Integer>[] getUnmatched() {
+        //to get unmatched lines, we simply loop through both files and removed matched lines
+
+        ArrayList<Integer>[] unmatched = new ArrayList[2]; // array of 2 ArrayLists
+        unmatched[0] = new ArrayList<>(); //[0] will be unmatched from file1
+        unmatched[1] = new ArrayList<>(); //[1] will be unmatched from file2
+
+        //loop thru file 1, adding only unmatched lines to array (skipping empty lines)
+        for(int i = 1; i < this.file1_size; i++){
+            if (file1.get(i).trim().isEmpty())
+                continue; //skiping the empty strings
+
+            if(!matchedLines1.contains(i)){
+                unmatched[0].add(i);
+            }
+        }
+
+        //loop thru file 2, adding only unmatched lines to array (skipping empty lines)
+        for(int i = 1; i < this.file2_size; i++){
+            if (file2.get(i).trim().isEmpty())
+                continue; //skiping the empty strings
+
+            if(!matchedLines2.contains(i)){
+                unmatched[1].add(i);
+            }
+        }
+
+        System.out.println(Arrays.toString(unmatched));
+
+        return unmatched;
     }
 
     //compare function
@@ -38,6 +74,7 @@ public class LineComparator {
         unix_diff();    //matches identical lines
         similarityDiff(); //matches similar lines
         lineSplit();   //matches line splits
+        getUnmatched();
     }
 
     //compares, stores and returns results in an arraylist of pairs of integers (stored as int[]) gets matched and unmatched
