@@ -1,7 +1,6 @@
 import java.util.ArrayList;
 //import apache text library's levenshtein function as we will use it for similarity diff
 import org.apache.commons.text.similarity.LevenshteinDistance;
-
 import java.util.Arrays;
 import java.util.HashSet;
 //Line Comparator class
@@ -63,6 +62,7 @@ public class LineComparator {
                 unmatched[1].add(i);
             }
         }
+
         return unmatched;
     }
 
@@ -205,6 +205,11 @@ public class LineComparator {
                 //now, if the score of the above loop is less then maxDiff, we add all lines to matched!
                 if(currentScore <= maxDiff) {
                     for (int x = 0; x < lineSplitIndex; x++) {
+                        //skips empty lines
+                        if(file2.get(j+x).trim().isEmpty()){
+                            continue;
+                        }
+
                         matched.add(new int[]{i, j+ x});
                         matchedLines1.add(i);
                         matchedLines2.add(j + x);
