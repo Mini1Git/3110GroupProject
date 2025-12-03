@@ -1,12 +1,12 @@
 <VERSION NUMBER = "1">
-    <LOCATION ORIG = "7" NEW = "12"/>
-    <LOCATION ORIG = "12" NEW = "21"/>
-    <LOCATION ORIG = "14" NEW = "23"/>
-    <LOCATION ORIG = "15" NEW = "24"/>
-    <LOCATION ORIG = "16" NEW ="25"/>
-    <LOCATION ORIG = "17" NEW = "26"/>
+    <LOCATION ORIG = "7" NEW = "12"/> <!-- Correct-->
+    <LOCATION ORIG = "12" NEW = "21"/><!-- Correct-->
+    <LOCATION ORIG = "14" NEW = "23"/><!-- Correct-->
+    <LOCATION ORIG = "15" NEW = "24"/><!-- Correct-->
+    <LOCATION ORIG = "16" NEW ="25"/><!-- Correct-->
+    <LOCATION ORIG = "17" NEW = "26"/><!-- Correct-->
     <!--done identical matches! Doing similarity now-->
-    <!--<LOCATION ORIG = "8" NEW = "14"/>-->
+    <LOCATION ORIG = "8" NEW = "14"/>
 
     <!--DONE similarity testing linesplitting-->
     <LOCATION ORIG = "1" NEW = "1"/>
@@ -17,7 +17,6 @@
     <LOCATION ORIG = "3" NEW = "6"/>
     <!--<LOCATION ORIG = "" NEW = ""/>-->
     <LOCATION ORIG = "3" NEW = "7"/>
-    <LOCATION ORIG = "4" NEW = "-1"/>
     <LOCATION ORIG = "5" NEW = "9"/>
     <LOCATION ORIG = "5" NEW = "10"/>
     <LOCATION ORIG = "9" NEW = "15"/>
@@ -25,5 +24,5 @@
     <LOCATION ORIG = "9" NEW = "17"/>
     <LOCATION ORIG = "10" NEW = "18"/>
     <LOCATION ORIG = "10" NEW = "19"/>
-    
+    <!-- 22 mappings-->
 </VERSION>

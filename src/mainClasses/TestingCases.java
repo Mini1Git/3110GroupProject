@@ -63,7 +63,7 @@ public class TestingCases {
     //for getLine, input the x, being the line number of the first file, and the line number of the second.
     private static void getLine(MyReader file1, MyReader file2, int x, int y){
 
-        System.out.println("\""+file1.listConverter().get(x).trim() + "\" |and| \"" + file2.listConverter().get(y).trim()+"\"");
+        System.out.print("\t\""+file1.listConverter().get(x).trim() + "\" |and| \"" + file2.listConverter().get(y).trim()+"\"\n");
     }
 
     //made this function so its easier to test within the range of the data set test cases.
@@ -103,7 +103,7 @@ public class TestingCases {
         Document doc = dBuilder.parse(file);
         NodeList versionTagList = doc.getElementsByTagName("VERSION");
         Element versionNum = (Element) versionTagList.item(0);
-        System.out.println(versionNum.getAttribute("NUMBER"));
+
         //got the correct version ^
         NodeList locationList = versionNum.getElementsByTagName("LOCATION");
         // got correct list ^
@@ -125,6 +125,9 @@ public class TestingCases {
             if (ourListOfY.get(i)[0] == (correctDataset.get(i)) && ourListOfY.get(i)[1] == correctDataset2.get(i)){
                 countCorrect++;
 
+            }
+            else{
+                System.out.println("Missing: " + correctDataset.get(i) + " and " + correctDataset2.get(i) + " Instead, got: " + ourListOfY.get(i)[0] + " and " + ourListOfY.get(i)[1]);
             }
         }
         double percentage = (double) countCorrect / correctDataset.size() * 100;
