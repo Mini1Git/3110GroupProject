@@ -1,0 +1,69 @@
+<VERSION NUMBER = "1">	<LOCATION ORIG = "1" NEW = "1" />	<!--"import java.util.ArrayList;" |and| "import java.util.ArrayList;"-->
+
+	<LOCATION ORIG = "2" NEW = "2" />	<!--"import java.util.HashSet;" |and| "import java.util.HashSet;"-->
+
+	<LOCATION ORIG = "4" NEW = "4" />	<!--"public class LineComparator {" |and| "public class LineComparator {"-->
+
+	<LOCATION ORIG = "5" NEW = "7" />	<!--"private ArrayList<String> file1;" |and| "private ArrayList<String> file1;"-->
+
+	<LOCATION ORIG = "6" NEW = "8" />	<!--"private ArrayList<String> file2;" |and| "private ArrayList<String> file2;"-->
+
+	<LOCATION ORIG = "7" NEW = "9" />	<!--"private ArrayList<int[]> matched;" |and| "private ArrayList<int[]> matched;"-->
+
+	<LOCATION ORIG = "10" NEW = "10" />	<!--"private int file1_size;" |and| "private int file1_size;"-->
+
+	<LOCATION ORIG = "11" NEW = "11" />	<!--"private int file2_size;" |and| "private int file2_size;"-->
+
+	<LOCATION ORIG = "12" NEW = "12" />	<!--"HashSet<Integer> matchedLines1 = new HashSet<>();" |and| "HashSet<Integer> matchedLines1;"-->
+
+	<LOCATION ORIG = "12" NEW = "21" />	<!--"HashSet<Integer> matchedLines1 = new HashSet<>();" |and| "matchedLines1 = new HashSet<>();"-->
+
+	<LOCATION ORIG = "13" NEW = "13" />	<!--"HashSet<Integer> matchedLines2 = new HashSet<>();" |and| "HashSet<Integer> matchedLines2;"-->
+
+	<LOCATION ORIG = "15" NEW = "15" />	<!--"public LineComparator(ArrayList<String> f1, ArrayList<String> f2) {" |and| "public LineComparator(ArrayList<String> f1, ArrayList<String> f2) {"-->
+
+	<LOCATION ORIG = "16" NEW = "16" />	<!--"file1 = f1;" |and| "file1 = f1;"-->
+
+	<LOCATION ORIG = "17" NEW = "17" />	<!--"file2 = f2;" |and| "file2 = f2;"-->
+
+	<LOCATION ORIG = "18" NEW = "18" />	<!--"file1_size = f1.size();" |and| "file1_size = f1.size();"-->
+
+	<LOCATION ORIG = "19" NEW = "19" />	<!--"file2_size = f2.size();" |and| "file2_size = f2.size();"-->
+
+	<LOCATION ORIG = "20" NEW = "20" />	<!--"matched = new ArrayList<int[]>();" |and| "matched = new ArrayList<int[]>();"-->
+
+	<LOCATION ORIG = "25" NEW = "40" />	<!--"}" |and| "}"-->
+
+	<LOCATION ORIG = "26" NEW = "41" />	<!--"}" |and| "}"-->
+
+	<LOCATION ORIG = "32" NEW = "23" />	<!--"}" |and| "}"-->
+
+	<LOCATION ORIG = "34" NEW = "25" />	<!--"public void unix_diff() {" |and| "public void unix_diff() {"-->
+
+	<LOCATION ORIG = "35" NEW = "27" />	<!--"for (int i = 1; i < this.file1_size; i++) {" |and| "for (int i = 1; i < this.file1_size; i++) {"-->
+
+	<LOCATION ORIG = "36" NEW = "28" />	<!--"if (file1.get(i).trim().isEmpty())" |and| "if (file1.get(i).trim().isEmpty())"-->
+
+	<LOCATION ORIG = "37" NEW = "29" />	<!--"continue;" |and| "continue; //skiping the empty strings"-->
+
+	<LOCATION ORIG = "38" NEW = "30" />	<!--"for (int j = 1; j < this.file2_size; j++) {" |and| "for (int j = 1; j < this.file2_size; j++) {"-->
+
+	<LOCATION ORIG = "40" NEW = "31" />	<!--"if (file2.get(j).trim().isEmpty() || matchedLines2.contains(j))" |and| "if (file2.get(j).trim().isEmpty() || matchedLines2.contains(j))"-->
+
+	<LOCATION ORIG = "42" NEW = "33" />	<!--"if (file1.get(i).equals(file2.get(j))) {" |and| "if (file1.get(i).equals(file2.get(j))) {"-->
+
+	<LOCATION ORIG = "43" NEW = "34" />	<!--"matched.add(new int[]{i, j});" |and| "matched.add(new int[]{i, j});"-->
+
+	<LOCATION ORIG = "44" NEW = "35" />	<!--"matchedLines1.add(i);" |and| "matchedLines1.add(i);"-->
+
+	<LOCATION ORIG = "45" NEW = "36" />	<!--"matchedLines2.add(j);" |and| "matchedLines2.add(j);"-->
+
+	<LOCATION ORIG = "48" NEW = "37" />	<!--"break;" |and| "break;"-->
+
+	<LOCATION ORIG = "49" NEW = "38" />	<!--"}" |and| "}"-->
+
+	<LOCATION ORIG = "53" NEW = "42" />	<!--"}" |and| "}"-->
+
+	<LOCATION ORIG = "54" NEW = "43" />	<!--"}" |and| "}"-->
+
+</VERSION>
