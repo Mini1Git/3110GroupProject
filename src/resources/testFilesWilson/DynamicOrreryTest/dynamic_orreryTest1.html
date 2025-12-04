@@ -1,16 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Orbit Drawing</title>
-    <style>
-        canvas {
-            border: 1px solid black;
-            background-color: #f0f0f0;
-        }
-    </style>
-</head>
 <body>
     <h1>Orbit Drawing</h1>
     <label for="e">Eccentricity (e): </label>
@@ -36,125 +23,11 @@
 
     <canvas id="orbitCanvas" width="800" height="800"></canvas>
 
-    <script>
-        let elapsedTime = 0; // Variable to keep track of elapsed time
 
-        function drawOrbit() {
-            const canvas = document.getElementById("orbitCanvas");
-            const ctx = canvas.getContext("2d");
-
-            // Clear the canvas
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            // Get input values
-            const e = parseFloat(document.getElementById("e").value);
-            const i_deg = parseFloat(document.getElementById("i_deg").value);
-            const w_deg = parseFloat(document.getElementById("w_deg").value);
-            const q_au_1 = parseFloat(document.getElementById("q_au_1").value);
-            const p_yr = parseFloat(document.getElementById("p_yr").value);
-            const tp_tdb = parseFloat(document.getElementById("tp_tdb").value);
-            const epoch_tdb = parseFloat(document.getElementById("epoch_tdb").value);
-
-            // Calculate semi-major axis (a) using q = a(1 - e)
-            const a = q_au_1 / (1 - e);
-
-            // Convert degrees to radians
-            const i = i_deg * (Math.PI / 180);
-            const w = w_deg * (Math.PI / 180);
-
-            // Calculate mean motion (n)
-            const meanMotion = (2 * Math.PI) / (p_yr * 365.25 * 24 * 3600); // Mean motion in radians/second
-
-            // Calculate elapsed time from periapsis
-            elapsedTime = (tp_tdb - epoch_tdb) * 86400 + (Date.now() / 1000) % (p_yr * 365.25 * 24 * 3600); // Convert days to seconds
-
-            // Calculate Mean Anomaly (M)
-            let M = meanMotion * elapsedTime; // Mean Anomaly in radians
-
-            // Normalize Mean Anomaly
-            M = M % (2 * Math.PI); // Keep M within the range [0, 2π]
-
-            // Calculate Eccentric Anomaly (E) from Mean Anomaly (M) using Kepler's equation
-            let E = M; // Initial guess
-            const tolerance = 1e-6; // Convergence tolerance
-            let delta;
-
-            // Iteratively solve for E
-            do {
-                delta = E - e * Math.sin(E) - M;
-                E -= delta / (1 - e * Math.cos(E)); // Newton-Raphson method
-            } while (Math.abs(delta) > tolerance);
-
-            // Calculate the true anomaly (ν) from E
-            const nu = 2 * Math.atan(Math.sqrt((1 + e) / (1 - e)) * Math.tan(E / 2));
-
-            // Center of the canvas
-            const centerX = canvas.width / 2;
-            const centerY = canvas.height / 2;
-
-            // Calculate points on the orbit
-            const points = [];
-            const numPoints = 100; // Number of points to plot
-
-            for (let j = 0; j < numPoints; j++) {
-                // True anomaly from 0 to 2*PI
-                const nuOrbit = (2 * Math.PI / numPoints) * j;
-
-                // Calculate distance from the focus
-                const r = a * (1 - e * e) / (1 + e * Math.cos(nuOrbit));
-
-                // Convert to Cartesian coordinates
-                const x = r * Math.cos(nuOrbit);
-                const y = r * Math.sin(nuOrbit);
-
-                // Rotate by argument of periapsis and account for inclination
-                const x_rotated = (x * Math.cos(w) - y * Math.sin(w));
-                const y_rotated = (x * Math.sin(w) + y * Math.cos(w)) * Math.cos(i);
-
-                // Store points for drawing
-                points.push({ x: centerX + x_rotated * 100, y: centerY - y_rotated * 100 });
-            }
-
-            // Draw the orbit
-            ctx.beginPath();
-            ctx.moveTo(points[0].x, points[0].y);
-            for (const point of points) {
-                ctx.lineTo(point.x, point.y);
-            }
-            ctx.closePath();
-            ctx.strokeStyle = "blue";
-            ctx.stroke();
-
-            // Draw the focus (central body)
-            ctx.beginPath();
-            ctx.arc(centerX, centerY, 5, 0, 2 * Math.PI);
-            ctx.fillStyle = "red";
-            ctx.fill();
-
-            // Calculate the position of the asteroid
-            const r_asteroid = a * (1 - e * e) / (1 + e * Math.cos(nu)); // Distance at the current true anomaly
-            const x_asteroid = r_asteroid * Math.cos(nu);
-            const y_asteroid = r_asteroid * Math.sin(nu);
-
-            // Rotate the asteroid position
-            const x_asteroid_rotated = (x_asteroid * Math.cos(w) - y_asteroid * Math.sin(w));
-            const y_asteroid_rotated = (x_asteroid * Math.sin(w) + y_asteroid * Math.cos(w)) * Math.cos(i);
-
-            // Draw the asteroid
-            ctx.beginPath();
-            ctx.arc(centerX + x_asteroid_rotated * 100, centerY - y_asteroid_rotated * 100, 5, 0, 2 * Math.PI);
-            ctx.fillStyle = "green"; // Asteroid color
-            ctx.fill();
-        }
-
-        // Initial drawing of the orbit
-        drawOrbit(); // Draw the orbit at the start
-
-        // Update the orbit and asteroid position periodically
-        setInterval(drawOrbit, 1000); // Redraw every second
-    </script>
 </body>
-</html>
+<!-- done the html-->
+
+Customize Toolbar…
 
 
 

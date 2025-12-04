@@ -1,13 +1,8 @@
-package testFilesWilson.Test5;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
-class FlashCard {
-    private String text;
-    private int nOptions;
-    //this boolean is here to check if user answers in the required time. 
-    public static boolean answered;
+import java.util.Arrays;import java.util.List;import java.util.Scanner;
+
+class FlashCard { private String text;private int numOfOptions;public static boolean answer;
+
     List<String> listofOptions = Arrays.asList("a", "b", "c", "d");
 
     // flash card and also states the rules, aka how many options for the one question. // up to 4 options for each question.
@@ -17,7 +12,7 @@ class FlashCard {
             System.out.println("TOO MANY OPTIONS, PLEASE TRY AGAIN"); //maybe take off this limit if we have time
             System.exit(0);
         }
-        nOptions = numOptions;
+        numOfOptions = numOptions;
     }
 
     
@@ -32,8 +27,9 @@ class FlashCard {
     // now do we want a seperate iption java file, to handle tohte optiomns logic, or do we cuz i was thinking we coauld use this  function to check which is the coererct answer. 
     public void correctAnswer(){
         for (int i = 0; i <= nOptions; i++){
-            //for every option, if option = string in FlashCard(...,...,String correctAnswer), make that crorrect. or maybe retunr that???
-            //basically, this will work whether the user needs 1,2,3, or 4 options.
+            //for every option, if option = string in FlashCard(...,...,String correctAnswer), make that correct. or maybe return that?
+            //basically,
+            // this will work whether the user needs 1,2,3, or 4 options.
         }
     }
     
@@ -68,8 +64,8 @@ class FlashCard {
         System.out.println("Choose an option.\n=");
         Scanner option = new Scanner(System.in);
         String chose = option.nextLine();
-        FlashCard.answered = true;
-        System.out.println("You earned " + time.points + " points!");
+        FlashCard.answer = true;
+        System.out.println("You have earned " + time.points + " points!");
         //where should logic for options be?
         
         

@@ -1,5 +1,8 @@
 
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.*;
 import org.w3c.dom.*;
 import javax.xml.parsers.*;
@@ -63,6 +66,10 @@ public class TestingCases {
 
         System.out.print("\t\""+file1.listConverter().get(x).trim() + "\" |and| \"" + file2.listConverter().get(y).trim()+"\"\n");
     }
+    private static void writeLineXML(BufferedWriter writer, MyReader file1, MyReader file2, int x, int y) throws IOException {
+
+        writer.write("\t<!--\""+file1.listConverter().get(x).trim() + "\" |and| \"" + file2.listConverter().get(y).trim()+"\"-->\n");
+    }
 
     //made this function so its easier to test within the range of the data set test cases.
     private static List<Integer> getRange(String xmlFile) throws Exception{
@@ -105,7 +112,7 @@ public class TestingCases {
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
         Document doc = dBuilder.parse(file);
         NodeList versionTagList = doc.getElementsByTagName("VERSION");
-        Element versionNum = (Element) versionTagList.item(0);
+        Element versionNum = (Element) versionTagList.item(versionTagList.getLength() - 1); // will always get the version we need.
 
         //got the correct version ^
         NodeList locationList = versionNum.getElementsByTagName("LOCATION");
@@ -124,26 +131,30 @@ public class TestingCases {
         }
         int countCorrect = 0;
 
-
-
         for (int[] pair : ourList) {
             int x = pair[0];
             int y = pair[1];
-            if (correctDataset[0].contains(x) && correctDataset[1].contains(y)){
-                System.out.println("Correct: " + x + " " + y);
-                countCorrect++;
+
+            boolean matched = false;
+
+            //if comparing within a range. basically, getIndex could help.
+
+
+            for (int i = 0; i < correctDataset[0].size(); i++) {
+                if (correctDataset[0].get(i) == x && correctDataset[1].get(i) == y) {
+                    matched = true;
+                    break;
+                }
             }
 
-
+            if (matched) {
+                System.out.println("Correct " + x + " " + y);
+                countCorrect++;
+            }
         }
 
-        int size = 0;
-        //count size of correctDataset
-        for (int num : correctDataset[0]) {
-            size++;
+        double percentage = (double) countCorrect / correctDataset[0].size() * 100;
 
-        }
-        double percentage = (double) countCorrect / size * 100;
 
         return percentage;
     }
@@ -155,6 +166,49 @@ public class TestingCases {
             return Integer.compare(a[1], b[1]);
         });
     }
-// TODO refactor testingCases because its not computing correctly. The tool works, i just need better algo for testing.
+
+    //TODO, output a xml mapping file, and recheck for errors and such.
+
+    public static void createXMLMappings(String fileOne, String fileTwo, String nameOfXMLFile) throws Exception {
+        //convert to MyReader.
+        MyReader file1 = new MyReader(fileOne);
+        MyReader file2 = new MyReader(fileTwo);
+
+        ArrayList<String> file_1 = file1.listConverter();
+        ArrayList<String> file_2 = file2.listConverter();
+
+        LineComparator lineComparator = new LineComparator(file_1, file_2);
+        lineComparator.compare();
+        ArrayList<int[]> results = lineComparator.getMatched();
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(nameOfXMLFile +".xml" ))){
+            writer.write("<VERSION NUMBER = \"1\">");
+            //loop through each element in arrayList
+            //sort
+            sortList(results);
+            for (int[] pair : results){
+                //store the pair of ints
+                int x = pair[0];
+                int y = pair[1];
+
+                writer.write("\t<LOCATION ORIG = \"" + x + "\" NEW = \"" + y + "\" />");
+                writeLineXML(writer,file1, file2, x, y);
+                writer.newLine();
+            }
+            writer.write("</VERSION>");
+            writer.flush();
+            writer.close();
+            System.out.print("Results written successfully to " + nameOfXMLFile +".xml");
+        } catch (IOException e) {
+
+            System.err.println("Error writing to file " + e.getMessage());
+        }
+
+
+
+
+
+    }
+
 
 }
