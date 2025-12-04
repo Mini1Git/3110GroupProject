@@ -4,10 +4,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 public class Output {
     //loops through arrayList filled w arrays of two ints (pair of ints)
-    //prints results on output.xml file
+    //prints results on filename file
 
-    public static void writeToFile(ArrayList<int[]> pairs){
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("output.xml"))){
+    public static void writeToFile(String filename, ArrayList<int[]> pairs){
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))){
 
             //loop through each element in arrayList
             for (int[] pair : pairs){
@@ -18,7 +18,7 @@ public class Output {
                 writer.write("<LOCATION ORIG = \"" + x + "\" NEW = \"" + y + "\" />");
                 writer.newLine();
             }
-            System.out.print("Results written successfully");
+            System.out.print("Results written successfully to " + filename);
         } catch (IOException e) {
             System.err.println("Error writing to file " + e.getMessage());
         }
