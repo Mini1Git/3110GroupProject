@@ -3,7 +3,7 @@ public class Person{
 	private Date birthday;
 	private String country;
 	//constructor with 3 parameters
-	public Person1(String name, Date birthday, String country)
+	public Person(String name, Date birthday, String country)
 	{
 		this.name = name;
 		this.birthday = birthday;
