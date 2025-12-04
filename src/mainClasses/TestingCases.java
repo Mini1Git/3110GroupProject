@@ -15,8 +15,12 @@ public class TestingCases {
 
         ArrayList<String> fileList1 = file1.listConverter();
         ArrayList<String> fileList2 = file2.listConverter();
+        System.out.println(fileList1);
+        System.out.println(fileList2);
+
         LineComparator comparator = new LineComparator(fileList1, fileList2);
         comparator.compare();
+
         ArrayList<int []> results = comparator.getMatched();
         List<Integer> range = new ArrayList<>();
 
@@ -32,20 +36,14 @@ public class TestingCases {
         }
         //System.out.println(results);
 
-
+        //sort list before testing
+        sortList(results);
 
 
         for (int[] pair : results){
             //store the pair of ints
-            //we should prob skip absolute matches for test cases.
-
             int x = pair[0];
             int y = pair[1];
-
-
-
-
-
 
             //basically, input the range of X, x being first file line range.
             //if (x >= range.get(0) && x <= range.get(range.size()-1)){
@@ -91,9 +89,14 @@ public class TestingCases {
         return range;
     }
 
-    private static double percentageTest(ArrayList<int[]> ourListOfY, String xmlFile) throws Exception{
-        List<Integer> correctDataset = new ArrayList<>();
-        List<Integer> correctDataset2 = new ArrayList<>();
+    private static double percentageTest(ArrayList<int[]> ourList, String xmlFile) throws Exception{
+        ArrayList<Integer>[] correctDataset = new ArrayList[2];
+        correctDataset[0] = new ArrayList<>();
+        correctDataset[1] = new ArrayList<>();
+        /*
+        * ArrayList<Integer>[] → array of lists
+            ArrayList<int[]> → list of arrays
+*  */
         if (xmlFile == null){
             return -1;
         }
@@ -114,26 +117,44 @@ public class TestingCases {
                 Element element = (Element) node;
                 int number = Integer.parseInt(element.getAttribute("ORIG"));
                 int number2 = Integer.parseInt(element.getAttribute("NEW"));
-                correctDataset.add(number);
-                correctDataset2.add(number2);
+                correctDataset[0].add(number);
+                correctDataset[1].add(number2);
             }
 
         }
         int countCorrect = 0;
-        for (int i = 0; i < correctDataset.size(); i++){
 
-            if (ourListOfY.get(i)[0] == (correctDataset.get(i)) && ourListOfY.get(i)[1] == correctDataset2.get(i)){
+
+
+        for (int[] pair : ourList) {
+            int x = pair[0];
+            int y = pair[1];
+            if (correctDataset[0].contains(x) && correctDataset[1].contains(y)){
+                System.out.println("Correct: " + x + " " + y);
                 countCorrect++;
+            }
 
-            }
-            else{
-                System.out.println("Missing: " + correctDataset.get(i) + " and " + correctDataset2.get(i) + " Instead, got: " + ourListOfY.get(i)[0] + " and " + ourListOfY.get(i)[1]);
-            }
+
         }
-        double percentage = (double) countCorrect / correctDataset.size() * 100;
+
+        int size = 0;
+        //count size of correctDataset
+        for (int num : correctDataset[0]) {
+            size++;
+
+        }
+        double percentage = (double) countCorrect / size * 100;
 
         return percentage;
     }
-// TODO: Sort the XML files (after finishing them) to be in order numbered X. maek a function, to match prof's format.
+    private static void sortList(ArrayList<int[]> results){
+        results.sort((a, b) -> {
+            if (a[0] != b[0]) {
+                return Integer.compare(a[0], b[0]);
+            }
+            return Integer.compare(a[1], b[1]);
+        });
+    }
+// TODO refactor testingCases because its not computing correctly. The tool works, i just need better algo for testing.
 
 }

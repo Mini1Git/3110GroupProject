@@ -6,11 +6,19 @@ import java.util.ArrayList;
 public class Main {
     public static void main(String [] args) throws Exception {
         //realTool();
-        MyReader file1 = new MyReader("src/resources/testFilesWilson/Test2/lineSplitTest.txt");
-        MyReader file2 = new MyReader("src/resources/testFilesWilson/Test2/lineSplitTest2.txt");
-        TestingCases.run(file1, file2, "src/resources/testFilesWilson/Test2/lineSplitTest.xml");
-    }
+        // below is testing
+        String file_1 = "testingASM.txt";
+        String file_2 = "testingASM2.txt";
+        String file_xml = "testingASM.xml";
+        String path = "testFilesWilson/asmTest/";
 
+        testing(path, file_1, file_2, file_xml);
+    }
+    public static void testing(String path, String file1, String file2, String fileXml) throws Exception {
+        MyReader file_1 = new MyReader("src/resources/" + path + file1);
+        MyReader file_2 = new MyReader("src/resources/" + path + file2);
+        TestingCases.run(file_1, file_2, "src/resources/" + path + fileXml);
+    }
     public static void realTool(){
         Scanner input = new Scanner(System.in);
 

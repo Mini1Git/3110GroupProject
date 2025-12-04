@@ -9,7 +9,7 @@ public class LineComparator {
 
     //this is the maxDiff value, if the similarity of two strings is below maxDiff, it will be matched
     //this value is adjustable increase or decrease max difference acceptability
-    double maxDiff = 0.15;
+    double maxDiff = 0.25;
 
     private ArrayList<String> file1;
     private ArrayList<String> file2;
@@ -71,6 +71,7 @@ public class LineComparator {
         unix_diff();    //matches identical lines
         similarityDiff(); //matches similar lines
         lineSplit();   //matches line splits
+
     }
 
     //compares, stores and returns results in an arraylist of pairs of integers (stored as int[]) gets matched and unmatched
@@ -102,7 +103,7 @@ public class LineComparator {
         //a nested for loop to compare each line from the unmatched arrays, similar to unix diff
         //but this time, we won't compare for identical lines, but use levenshtein to compare similarity
         //we add the best similarity score match (thats also under the threshold) to matched array
-        for(int i = 0; i < file1_size; i++) {
+        for(int i = 1; i < file1_size; i++) {
             //skip empty lines
             if (file1.get(i).trim().isEmpty())
                 continue; //skiping the empty strings
@@ -111,7 +112,7 @@ public class LineComparator {
             int bestMatchLine = -1;
             double bestMatchScore = 10.0;
 
-            for (int j = 0; j < file2_size; j++) {
+            for (int j = 1; j < file2_size; j++) {
                 //this if statement prevents dupes by skipping lines that are already matched and skips empty lines
                 if(matchedLines2.contains(j) || file2.get(j).trim().isEmpty()){
                     continue;
@@ -128,19 +129,13 @@ public class LineComparator {
                 int prevLine2 = j - 1;
                 int nextLine1 = i + 1;
                 int nextLine2 = j + 1;
-                //if the line we're trying to get context of, is either the first or last line
-                //we just set prev/ next line to the current line num
-                if(i <= 1){
-                    prevLine1 = i;
-                }
-                if(j <= 1){
-                    prevLine2 = j;
-                }
+                //if the line we're trying to get context of, is either the last line
+                //we just set next line to be 0, which is an empty string
                 if(i >= file1_size - 1){
-                    nextLine1 = i;
+                    nextLine1 = 0;
                 }
                 if(j >= file2_size - 1){
-                    nextLine2 = j;
+                    nextLine2 = 0;
                 }
 
                 //calcs the LD of previous line and next line, adds it and divdes by 2 to get the average
@@ -170,28 +165,54 @@ public class LineComparator {
     //check for line split matches from the remaining unmatched lines
     public void lineSplit(){
         //loop thru the unmatched arrays again
-        for(int i = 0; i < file1_size; i++) {
+        for(int i = 1; i < file1_size; i++) {
             //skip empty lines
             if (file1.get(i).trim().isEmpty())
                 continue;
 
-            for (int j = 0; j < file2_size; j++) {
+            for (int j = 1; j < file2_size; j++) {
                 //this if statement prevents dupes by skipping lines that are already matched and skips empty lines
                 if(matchedLines2.contains(j) || file2.get(j).trim().isEmpty()){
                     continue;
                 }
 
-                //we get our starting scores and data
-                double currentScore = normalizedLD(file1.get(i), file2.get(j));
+                //here, we're going to calc the context score of the line splits by doing leven distance for the surrounding lines
+                int prevLine1 = i - 1;
+                int prevLine2 = j - 1;
+                int nextLine1 = i + 1;
+                int nextLine2 = j + 1;
+                //if the line we're trying to get context of, is either the last line
+                //we just set next line to be 0, which is an empty string
+                if(i >= file1_size - 1){
+                    nextLine1 = 0;
+                }
+                if(j >= file2_size - 1){
+                    nextLine2 = 0;
+                }
+
                 String currentLineString = file2.get(j);
+                double contentDiff = normalizedLD(file1.get(i), currentLineString);
+                double contextDiff = (normalizedLD(file1.get(prevLine1), file2.get(prevLine2)) + normalizedLD(file1.get(nextLine1), file2.get(nextLine2))) / 2;
+                double currentScore = (contentDiff*0.6) + (contextDiff*0.4); //we get our starting scores and data
+
                 int lineSplitIndex = 1;
 
                 //now we check for line splitting
                 //if the line after the current line isnt unmatched, it means it's arleady matched by another index and thus isn't part of the line split
                 while(!matchedLines2.contains(j+lineSplitIndex) && j + lineSplitIndex < file2_size){
-                    //we concatinate the next line with our currentLine and then check LD for the new concat string
+                    //update the nextLine2 if there is one
+                    if(nextLine2 < file2_size - 1){
+                        nextLine2 += 1;
+                    }
+                    else{
+                        nextLine2 = 0;
+                    }
+
+                    //we concatinate the next line with our currentLine and then check score for the new concat string (using context + content diff)
                     currentLineString = currentLineString + file2.get(j+lineSplitIndex);
-                    double nextScore = normalizedLD(file1.get(i), currentLineString);
+                    contentDiff = normalizedLD(file1.get(i), currentLineString);
+                    contextDiff = (normalizedLD(file1.get(prevLine1), file2.get(prevLine2)) + normalizedLD(file1.get(nextLine1), file2.get(nextLine2))) / 2;
+                    double nextScore = (contentDiff*0.6) + (contextDiff*0.4);
                     if(nextScore > currentScore){
                         //once concatinating the lines stop decreasing the ld, we stop checking for line split
                         break;
@@ -225,6 +246,10 @@ public class LineComparator {
     // we normalize because longer strings can result in higher scores, even if the string is more similar then shorter strings
     // (ex: abc and xyz have LD of 3, while teststring12345 and teststringabcde have LD of 5)
     public double normalizedLD(String text1, String text2){
+        if (text1.isEmpty() && text2.isEmpty()) {
+            return 0.0; //if both strings are empty, return 0
+        }
+
         LevenshteinDistance diff = new LevenshteinDistance();
         return ((double)diff.apply(text1, text2) / (text1.length() + text2.length()));
     }
@@ -241,7 +266,3 @@ public class LineComparator {
         System.out.println(matchedLines2);
     }
 }
-
-
-
-
