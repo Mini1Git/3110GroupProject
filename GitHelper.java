@@ -29,4 +29,15 @@ public class GitHelper {
         }
         return output;
     }
+
+    //check commit message for "bug fix" words
+    public static boolean isFixCommit(String repoPath){
+        //get most recent commit, only commit message no other info
+        ArrayList<String> logs = runCommand("git log -1 --pretty=%B", repoPath);
+        String fullMessage = String.join(" ", logs).toLowerCase();
+
+        boolean result = false;
+        result = fullMessage.matches(".*(fix|bug|repair).*");
+        return result;
+    }
 }
