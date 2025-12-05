@@ -49,5 +49,5 @@ public class GitHelper {
         String command = "git show " + revision + ":" + filename;
         return runCommand(command, repoPath);
     }
-    */
+
 }
