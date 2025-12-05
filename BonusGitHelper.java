@@ -35,7 +35,9 @@ public class BonusGitHelper {
         //get most recent commit, only commit message no other info
         ArrayList<String> logs = runCommand("git log -1 --pretty=%B", repoPath);
         String fullMessage = String.join(" ", logs).toLowerCase();
-
+        
+        //debug line
+        System.out.println("commit is " + fullMessage);
         boolean result = false;
         result = fullMessage.matches(".*(fix|bug|repair).*");
         return result;
