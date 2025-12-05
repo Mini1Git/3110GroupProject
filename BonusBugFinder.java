@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 import java.util.HashMap;
-public class BugFinder {
+public class BonusBugFinder {
     /*
     - compare buggy (HEAD~1) vs. fixed (HEAD)
     - any line in buggy that is unmatched or modified/similarity matched was "fixed"
@@ -11,15 +11,15 @@ public class BugFinder {
     */
 
     public static void analyze(String repoPath, String fileName){
-        if (!GitHelper.isFixCommit(repoPath)){
+        if (!BonusGitHelper.isFixCommit(repoPath)){
             System.out.println("Latest commit is not a bug fix. ");
             return;
         }
         System.out.println("Latest commit is a bug fix. Searching for bug introducing changes... ");
 
-        ArrayList<String> fixedFile = GitHelper.getFileContent(repoPath, fileName, "HEAD");
-        ArrayList<String> buggyFile = GitHelper.getFileContent(repoPath, fileName, "HEAD~1");
-        ArrayList<String> oldFile   = GitHelper.getFileContent(repoPath, fileName, "HEAD~2");
+        ArrayList<String> fixedFile = BonusGitHelper.getFileContent(repoPath, fileName, "HEAD");
+        ArrayList<String> buggyFile = BonusGitHelper.getFileContent(repoPath, fileName, "HEAD~1");
+        ArrayList<String> oldFile   = BonusGitHelper.getFileContent(repoPath, fileName, "HEAD~2");
 
         //find what lines were changed between buggy and fixed
         LineComparator fixDiff = new LineComparator(buggyFile, fixedFile);

@@ -3,7 +3,7 @@ import java.io.File;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-public class GitHelper {
+public class BonusGitHelper {
     
     //from A3
     /* method to run terminal commands easily
