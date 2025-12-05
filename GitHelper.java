@@ -40,4 +40,14 @@ public class GitHelper {
         result = fullMessage.matches(".*(fix|bug|repair).*");
         return result;
     }
+
+    //runs "git show", print out text of the file from the past
+    //return text of file in ArrayList<String>
+    public static ArrayList<String> getFileContent(String repoPath, String filename, String revision) {
+        // Example command: git show HEAD~1:src/MyFile.java
+        // "revision" will be "HEAD" for current, "HEAD~1" for one version back, or "HEAD~2" for two versions back
+        String command = "git show " + revision + ":" + filename;
+        return runCommand(command, repoPath);
+    }
+    */
 }
