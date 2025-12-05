@@ -25,7 +25,7 @@ public class BonusGitHelper {
                 output.add(line);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+           
         }
         return output;
     }
