@@ -65,8 +65,12 @@ public class BonusBugFinder {
             System.out.println("No changes found");
             return;
         }
-        //System.out.println("Found buggy lines in previous version at lines: " + fixedIndices);
-
+        // --- NEW DEBUG PRINT: Show what we are tracking initially ---
+        System.out.println("Tracking the following " + fixedIndices.size() + " buggy lines from HEAD~1:");
+        for (int index : fixedIndices) {
+            System.out.println("   [Line " + index + "] " + currentBuggy.get(index).trim());
+        }
+        System.out.println("--------------------------------------------------");
         //now trace back to find who introduced the buggy lines
         int currentRev = 1; //starting at HEAD~1 i.e. one version back
 
@@ -100,9 +104,16 @@ public class BonusBugFinder {
                 }
             }
 
-            if (inheritedIndices.isEmpty()){
+            if (!introducedLines.isEmpty()){
                 //bug not in older file, introduced in current revision
                 System.out.println("Bug was introduced in HEAD~" + currentRev + ", at lines " + introducedLines);
+            
+                // --- NEW DEBUG PRINT: Show content of found bugs ---
+                for (int index : inheritedIndices) {
+                    System.out.println("   > Content: \"" + currentBuggy.get(index).trim() + "\"");
+                }
+                System.out.println(); // Empty line for formatting
+            
             }
 
             //track bugs inherited, continue looping backwards previous versions
