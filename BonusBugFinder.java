@@ -65,19 +65,19 @@ public class BonusBugFinder {
             System.out.println("No changes found");
             return;
         }
-        System.out.println("Found buggy lines in previous version at lines: " + fixedIndices);
+        //System.out.println("Found buggy lines in previous version at lines: " + fixedIndices);
 
         //now trace back to find who introduced the buggy lines
         int currentRev = 1; //starting at HEAD~1 i.e. one version back
-        boolean found = false;
 
-        while (!found){
+        //keep going until buggy lines are all tracked
+        while (!fixedIndices.isEmpty()){
             int prevRev = currentRev + 1;
             ArrayList<String> olderFile = BonusGitHelper.getFileContent(repoPath, fileName, "HEAD~" + prevRev);
             // if older file does not exist, we are at the start file
             // so the current version is the bug introducer
             if (olderFile.isEmpty()){
-                System.out.println("Bug was introduced in HEAD~" + currentRev);
+                System.out.println("Bug was introduced in HEAD~" + currentRev + ", at lines " + fixedIndices);
                 break;
             }
 
@@ -86,32 +86,34 @@ public class BonusBugFinder {
             historyDiff.compare();
             ArrayList<int[]> historyMatches = historyDiff.getMatched();
             //array list of 2 element integer arrays
-            ArrayList<Integer> inheritedIndices = new ArrayList<>();
+            ArrayList<Integer> inheritedIndices = new ArrayList<>(); //lines that were inherited
+            ArrayList<Integer> introducedLines = new ArrayList<>(fixedIndices); //line introduced now
 
             //check if the buggy lines map to older file
+            //pair[0] is older file line index, pair[1] is current buggy file line index
             for (int[] pair : historyMatches){
                 if (fixedIndices.contains(pair[1])){
-                    //bug is in older file, map it to the index in the older file
+                    //bug is in older file, map it to the index in the older file, it was inherited
                     inheritedIndices.add(pair[0]);
+                    //remove line from introduced since it was not introduced
+                    introducedLines.remove(Integer.valueOf(pair[1]));
                 }
             }
 
             if (inheritedIndices.isEmpty()){
                 //bug not in older file, introduced in current revision
-                System.out.println("Bug introduced in HEAD~" + currentRev);
-                found = true;
+                System.out.println("Bug was introduced in HEAD~" + currentRev + ", at lines " + introducedLines);
             }
-            else{
-                //bug inherited, continue looping backwards previous versions
-                fixedIndices = inheritedIndices;
-                currentBuggy = olderFile;
-                currentRev ++;
 
-                //to prevent infinite/long loop, can comment out if needed
-                if (currentRev > 50){
-                    System.out.println("Went back 50 commits. stopping. ");
-                    break;
-                }
+            //track bugs inherited, continue looping backwards previous versions
+            fixedIndices = inheritedIndices;
+            currentBuggy = olderFile;
+            currentRev ++;
+
+            //to prevent infinite/long loop, can comment out if needed
+            if (currentRev > 50){
+                System.out.println("Went back 50 commits. stopping. ");
+                break;
             }
         }
 
