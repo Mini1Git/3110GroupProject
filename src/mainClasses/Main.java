@@ -86,7 +86,7 @@ public class Main {
                 }
             }
         }
-        System.out.println("WE HAVE "+(totalMappings - 40) + " MAPPINGS!");
+        System.out.println("WE HAVE "+(totalMappings - 40) + " MAPPINGS!"); // -40 because of the <VERSION> (theres 2 in each xml file)
     }
 
     public static void realTool(){
