@@ -58,37 +58,4 @@ public class eval {
         input.close();
     }
     
-    //driver
-    public static void main(String[] args) {
-        Scanner input = new Scanner(System.in);
-        int in;
-        commandList();
-
-        //loop for input
-        while(true){
-            in = input.nextInt();
-            
-            if(in != 1 || in != 2 || in != 3){
-                System.out.println("Invalid command");
-                continue;
-            }
-
-            break;
-        }
-
-        //performing operation
-        System.out.println("Enter 2 separate lines:");
-        String l1 = input.nextLine();
-        String l2 = input.nextLine();
-
-        if(in == 1){
-            comp(l1, l2);
-        }
-        else if(in == 2){
-            reverse(l1, l2);
-        }
-        else if(in == 3){
-            System.out.println(add(l1, l2));
-        }
-    }
 }

@@ -47,30 +47,4 @@ public class eval {
 
         input.close();
     }
-
-    public static void main(String[] args) {
-        Scanner input = new Scanner(System.in);
-        String line;
-        commandList();
-        while(){
-            line = input.nextLine();
-            
-            if(line != "compare" || line != "reverse"){
-                System.out.println("Invalid command");
-                continue;
-            }
-
-            break;
-        }
-        System.out.println("Enter 2 separate lines:");
-        String l1 = input.nextLine();
-        String l2 = input.nextLine();
-
-        if(line == "compare"){
-            comp(l1, l2);
-        }
-        else if(line == "reverse"){
-            reverse(l1, l2);
-        }
-    }
 }
