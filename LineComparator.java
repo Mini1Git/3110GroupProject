@@ -221,7 +221,7 @@ public class LineComparator {
 
                 //now, if the score of the above loop is less then maxDiff, we add all lines to matched!
                 if(currentScore < maxDiff) {
-                    for (int x = 0; x <= lineSplitIndex; x++) {
+                    for (int x = 0; x < lineSplitIndex; x++) {
                         //skips empty lines
                         if(file2.get(j+x).trim().isEmpty()){
                             continue;
