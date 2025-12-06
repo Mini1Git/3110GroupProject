@@ -1,0 +1,80 @@
+<VERSION NUMBER = "1">	<LOCATION ORIG = "1" NEW = "1" />	<!--"import java.util.Random;" |and| "import java.util.Random;"-->
+
+	<LOCATION ORIG = "3" NEW = "3" />	<!--"public class SimulatedAnnealing {" |and| "public class SimulatedAnnealing {"-->
+
+	<LOCATION ORIG = "4" NEW = "4" />	<!--"double prob;" |and| "double prob = 50.0;"-->
+
+	<LOCATION ORIG = "5" NEW = "5" />	<!--"double temp;" |and| "double temp = 2.0;"-->
+
+	<LOCATION ORIG = "6" NEW = "6" />	<!--"double cooling;" |and| "double cooling = 0.02;"-->
+
+	<LOCATION ORIG = "7" NEW = "7" />	<!--"boolean lastAction;" |and| "boolean lastAction;"-->
+
+	<LOCATION ORIG = "13" NEW = "14" />	<!--"}" |and| "}"-->
+
+	<LOCATION ORIG = "15" NEW = "10" />	<!--"public SimulatedAnnealing(double p, double t, double c){" |and| "public SimulatedAnnealing(double p, double t, double c){"-->
+
+	<LOCATION ORIG = "16" NEW = "11" />	<!--"prob = p;" |and| "prob = p;"-->
+
+	<LOCATION ORIG = "17" NEW = "12" />	<!--"temp = t;" |and| "temp = t;"-->
+
+	<LOCATION ORIG = "18" NEW = "13" />	<!--"cooling = c;" |and| "cooling = c;"-->
+
+	<LOCATION ORIG = "19" NEW = "25" />	<!--"}" |and| "}"-->
+
+	<LOCATION ORIG = "21" NEW = "16" />	<!--"public boolean chose(){" |and| "public boolean chose(){"-->
+
+	<LOCATION ORIG = "22" NEW = "8" />	<!--"Random rand = new Random();" |and| "Random rand = new Random();"-->
+
+	<LOCATION ORIG = "25" NEW = "18" />	<!--"lastAction = true;" |and| "lastAction = true;"-->
+
+	<LOCATION ORIG = "26" NEW = "19" />	<!--"return true;" |and| "return true;"-->
+
+	<!--<LOCATION ORIG = "26" NEW = "31" />	-"return true;" |and| "prob = 0;"-->
+
+	<LOCATION ORIG = "27" NEW = "20" />	<!--"}" |and| "}"-->
+
+	<LOCATION ORIG = "27" NEW = "32" />	<!--"}" |and| "}"-->
+
+	<LOCATION ORIG = "28" NEW = "21" />	<!--"else {" |and| "else {"-->
+
+	<LOCATION ORIG = "29" NEW = "22" />	<!--"lastAction = false;" |and| "lastAction = false;"-->
+
+	<LOCATION ORIG = "30" NEW = "23" />	<!--"return false;" |and| "return false;"-->
+
+	<LOCATION ORIG = "30" NEW = "42" />	<!--"return false;" |and| "temp -= cooling;"-->
+
+	<LOCATION ORIG = "31" NEW = "24" />	<!--"}" |and| "}"-->
+
+
+
+	<LOCATION ORIG = "32" NEW = "44" />	<!--"}" |and| "}"-->
+
+	<LOCATION ORIG = "34" NEW = "27" />	<!--"public void changeProb(double probChange){" |and| "public void changeProb(double probChange){"-->
+
+	<LOCATION ORIG = "35" NEW = "28" />	<!--"if(lastAction){" |and| "if(lastAction){"-->
+
+	<LOCATION ORIG = "36" NEW = "29" />	<!--"prob -= probChange * temp;" |and| "prob -= probChange * temp;"-->
+
+
+
+	<LOCATION ORIG = "37" NEW = "33" />	<!--"}" |and| "}"-->
+
+	<LOCATION ORIG = "38" NEW = "34" />	<!--"else{" |and| "else{"-->
+
+	<LOCATION ORIG = "39" NEW = "35" />	<!--"prob += probChange * temp;" |and| "prob += probChange * temp;"-->
+
+	<LOCATION ORIG = "40" NEW = "39" />	<!--"}" |and| "}"-->
+
+
+
+
+	<LOCATION ORIG = "44" NEW = "43" />	<!--"}" |and| "}"-->
+
+	<LOCATION ORIG = "45" NEW = "30" />	<!--"if(prob < 0){" |and| "if(prob < 0){"-->
+
+
+	<LOCATION ORIG = "46" NEW = "31"/>
+	<LOCATION ORIG = "55" NEW = "46" />	<!--"}" |and| "}"-->
+
+</VERSION>

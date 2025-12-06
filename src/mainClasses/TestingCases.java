@@ -10,12 +10,7 @@ import javax.xml.parsers.*;
 import java.io.File;
 
 public class TestingCases {
-
-
-
     public static void run(MyReader file1, MyReader file2, String xmlFile) throws Exception {
-
-
 
         ArrayList<String> fileList1 = file1.listConverter();
         ArrayList<String> fileList2 = file2.listConverter();
@@ -24,14 +19,12 @@ public class TestingCases {
 
         LineComparator comparator = new LineComparator(fileList1, fileList2);
 
-
-
-
         comparator.compare();
         ArrayList<Integer>[] unmatchedLines = comparator.getUnmatched();
 
         System.out.println("These are unmatched! \n"+unmatchedLines[0] + "\n" + unmatchedLines[1] + "\n");
 
+        //TODO DONT FORGET TO SORT THE OUTPUT AS WELL AS ADD THE UNMATCHED TO OUTPUT.
 
 
         ArrayList<int []> results = comparator.getMatched();
@@ -42,16 +35,7 @@ public class TestingCases {
 
         List<Integer> range = new ArrayList<>();
 
-        try{
-            if(xmlFile != null){
-                range = getRange(xmlFile);
-            }
 
-        }
-        catch(Exception e){
-            System.out.println("xml error");
-            e.printStackTrace();
-        }
         //System.out.println(results);
 
         //sort list before testing
@@ -65,8 +49,7 @@ public class TestingCases {
 
             //basically, input the range of X, x being first file line range.
 
-
-            //System.out.println("First File: "+ x + " Second File: " + y);getLine(file1, file2, x, y);
+            System.out.println("First File: "+ x + " Second File: " + y);getLine(file1, file2, x, y);
 
         }
         System.out.println(percentageTest(results, xmlFile) + "%");
@@ -84,39 +67,12 @@ public class TestingCases {
         writer.write("\t<!--\""+file1.listConverter().get(x).trim() + "\" |and| \"" + file2.listConverter().get(y).trim()+"\"-->\n");
     }
 
-    //made this function so its easier to test within the range of the data set test cases.
-    private static List<Integer> getRange(String xmlFile) throws Exception{
-        List<Integer> range = new ArrayList<>();
-        File file = new File(xmlFile);
-        //document builder is related to xml parsers, lets you load xml file as a tree of nodes.
-        DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance(); // factory design pattern lol
-        DocumentBuilder dBuilder = dbFactory.newDocumentBuilder(); // is the parser
-        Document doc = dBuilder.parse(file); // parses the file
 
-        // now we need to get the nodes
-        NodeList nodeList = doc.getElementsByTagName("LOCATION"); // <LOCATION ORIG="114" NEW="114" /> // these uses the LOCATION TAG.
-        //Thus, each location tag becomes a ELEMENT object
-        for (int i = 0; i < nodeList.getLength(); i++){
-            Node node = nodeList.item(i);
-            //then get the attribute
-            if (node.getNodeType() == Node.ELEMENT_NODE){
-                Element element = (Element) node; // cast
-                int number = Integer.parseInt(element.getAttribute("ORIG"));
-                range.add(number);
-            }
-
-        }
-        return range;
-    }
 
     private static double percentageTest(ArrayList<int[]> ourList, String xmlFile) throws Exception{
-        ArrayList<Integer>[] correctDataset = new ArrayList[2];
-        correctDataset[0] = new ArrayList<>();
-        correctDataset[1] = new ArrayList<>();
-        /*
-        * ArrayList<Integer>[] → array of lists
-            ArrayList<int[]> → list of arrays
-*  */
+
+        Map<Integer, List<Integer>> correctMap = new HashMap<>();
+       //use hashmap for more accurate pairings XML
         if (xmlFile == null){
             return -1;
         }
@@ -132,7 +88,6 @@ public class TestingCases {
         Document doc = dBuilder.parse(file);
         NodeList versionTagList = doc.getElementsByTagName("VERSION");
         Element versionNum = (Element) versionTagList.item(versionTagList.getLength() - 1); // will always get the version we need.
-
         //got the correct version ^
         NodeList locationList = versionNum.getElementsByTagName("LOCATION");
         // got correct list ^
@@ -141,57 +96,39 @@ public class TestingCases {
             Node node = locationList.item(i);
             if (node.getNodeType() == Node.ELEMENT_NODE){
                 Element element = (Element) node;
-                int number = Integer.parseInt(element.getAttribute("ORIG"));
-                int number2 = Integer.parseInt(element.getAttribute("NEW"));
-                correctDataset[0].add(number);
-                correctDataset[1].add(number2);
+                int orig = Integer.parseInt(element.getAttribute("ORIG"));
+
+                List<Integer> newList = new ArrayList<>();
+                newList.add(Integer.parseInt(element.getAttribute("NEW")));
+
+                //get alt aka line splits if there are. Prof has <alts> as line splits.
+                NodeList altList = element.getElementsByTagName("ALT");
+                for (int j = 0; j < altList.getLength(); j++) {
+                    Element alt = (Element) altList.item(j);
+                    newList.add(Integer.parseInt(alt.getAttribute("NEW")));
+                }
+
+                correctMap.put(orig, newList); // thus, we can now map ORIG to multiple lines if line split.
+
             }
 
         }
         int countCorrect = 0;
 
-        System.out.println(correctDataset[0]);
-        System.out.println(correctDataset[1]);
-        System.out.println("SIZE OF Correct Dataset: " + correctDataset[0].size());
-
-
-
-
 
         for (int[] pair : ourList) {
-            int x = pair[0];
-            int y = pair[1];
+                int x = pair[0];
+                int y = pair[1];
 
 
-            if ((x > correctDataset[0].getFirst() && x<correctDataset[0].getLast())){
-                System.out.println(countCorrect);
-                //also check for umatched, and then map them to -1
-                //we check for Xs only I think
+                if (!correctMap.containsKey(x)) continue;// skip these, but will make it so that this will evaluate within the XML correct range.
 
-
-
-                System.out.println("TRYING TO FIND: "+correctDataset[0].indexOf(x) +" = " +x+" and "+ correctDataset[1].indexOf(y) + "="+y);
-                if ((!correctDataset[0].contains(x) || !correctDataset[1].contains(y))) { // the problem is that this looks within the whole file, and some datasets are within a range.
-                    System.out.println("COULD NOT FIND " + x +" and "+ y + " in the correct dataset");
+                List<Integer> possiblePairs = correctMap.get(x);
+                if (possiblePairs.contains(y)) {
+                    countCorrect++;
                 }
-                for (int i = 0; i < correctDataset[0].size(); i++) {
-
-                    if (correctDataset[0].get(i) == x && correctDataset[1].get(i) == y) {
-                        //System.out.println(x +"FOUND "+ y);
-                        countCorrect++;
-                        break;
-                    }
-                }
-
             }
-
-        }
-
-        System.out.println("Correct: "+ countCorrect);
-        System.out.println(correctDataset[0].size());
-        double percentage = (double) (countCorrect) / (correctDataset[0].size()) * 100;
-
-
+        double percentage = (double) (countCorrect) / (correctMap.size()) * 100;
         return percentage;
     }
     private static void sortList(ArrayList<int[]> results){
@@ -203,7 +140,7 @@ public class TestingCases {
         });
     }
 
-    //TODO, output a xml mapping file, and recheck for errors and such.
+
 
     public static void createXMLMappings(String fileOne, String fileTwo, String nameOfXMLFile) throws Exception {
         //convert to MyReader.
@@ -241,19 +178,50 @@ public class TestingCases {
         }
     }
 
-    // TODO: Need to check for deletions in output and testing!!!!!! Basically, just get unmatched and map them to -1, then add them to the list.
-
-    public static void writeCSVData(ArrayList<String> files1, ArrayList<String> files2, ArrayList<String> xmlFiles){
+    public static void writeCSVData(ArrayList<String> files1, ArrayList<String> files2, ArrayList<String> xmlFiles, ArrayList<String> nameOfPersons){
         try{
             BufferedWriter writer = new BufferedWriter(new FileWriter("TESTING_RESULTS.csv"));
-            writer.write("File 1, File 2, XML File, Percentage"); // columns here
+            writer.write("Author, File 1, File 2, XML File, Percentage"); // columns here
+            System.out.println(xmlFiles.size());
+            double total = 0;
+            for (int i = 0; i < xmlFiles.size(); i++){
+                System.out.println("Working on... " + xmlFiles.get(i));
+                File file1_Path = new File(files1.get(i));
+                File file2_Path = new File(files2.get(i));
+                File xmlFile = new File(xmlFiles.get(i));
+                writer.newLine();
+                MyReader file1 = new MyReader(file1_Path.getPath());
+                MyReader file2 = new MyReader(file2_Path.getPath());
+                LineComparator lc = new LineComparator(file1.listConverter(), file2.listConverter());
+                lc.compare();
+                ArrayList<int[]> results = lc.getMatched();
+                ArrayList<Integer>[] unmatchedLines = lc.getUnmatched();
+                for (Integer x : unmatchedLines[0]){
+                    results.add(new int[]{x,-1}); // add unmatched
+                }
+                sortList(results);
+                try{
+                writer.write(nameOfPersons.get(i)+", "+file1_Path.getName() + ", " + file2_Path.getName() + ", " + xmlFile.getName() + ", " + percentageTest(results, xmlFiles.get(i)));
 
+                }
 
+                catch (Exception e){
+                    System.err.println("Error writing to file: " + e.getMessage() + " " + xmlFiles.get(i));
+                }
+                System.out.println("Done " + xmlFiles.get(i) + "!");
+                //wanna calculate average of all tests.
+                total += percentageTest(results, xmlFiles.get(i));
+            }
+            double avg = total / xmlFiles.size();
+            System.out.println("\n\nFINISHED!\nAverage is: " + avg+ "%");
             writer.flush();
             writer.close();
 
         } catch (IOException e) {
             System.out.println("Error writing to file " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Error writing to file :" + e.getMessage() + "??????\n ");
+
         }
 
     }
