@@ -1,6 +1,5 @@
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.HashMap;
 import java.util.Scanner;
 import java.util.ArrayList;
 
@@ -12,29 +11,71 @@ public class Main {
         ArrayList<String> fileOnes = new ArrayList<>();
         ArrayList<String> fileTwos = new ArrayList<>();
         ArrayList<String> fileXMLs = new ArrayList<>();
+        ArrayList<String> names = new ArrayList<>();
 
-        String daniel = "DanielTestCases/testCasesFiles/";
-        String liana = "testFilesLiana/testFilesLiana/";
-        String tyler = "testFilesTyler/testFilesTyler/";
-        String wilson = "testFilesWilson/";
 
 
         String path = "src/resources/";
 
-        String file_1 = "GC_1.java";
-        String file_2 = "GC_2.java";
-        String file_xml = "GC";
 
+        String file1 = "ProfDataset/Professor/doubleCacheTest/DoubleCache_1.java";
+        String file2 = "ProfDataset/Professor/doubleCacheTest/DoubleCache_2.java";
+        String fileXML = "ProfDataset/Professor/doubleCacheTest/DoubleCache";
+        findFiles(path, fileOnes, fileTwos, fileXMLs, names); // helps with automation
+        TestingCases.writeCSVData(fileOnes, fileTwos, fileXMLs, names);
 
          //System.out.println("Writing XML to: " + new File(path + file_xml + ".xml").getAbsolutePath());TestingCases.createXMLMappings(path+file_1, path+file_2, path+file_xml);
-        testing(path, file_1, file_2, file_xml);
-        //TestingCases.writeCSVData(fileOnes, fileTwos, fileXMLs);
+        //testing(path, file1, file2 , fileXML ); for testing specific datasets.
+
     }
     public static void testing(String path, String file1, String file2, String fileXml) throws Exception {
         MyReader file_1 = new MyReader(path + file1);
         MyReader file_2 = new MyReader(path + file2);
         TestingCases.run(file_1, file_2, path + fileXml+ ".xml");
     }
+
+    //this function is so sad.
+    public static void findFiles(String path, ArrayList<String> f1, ArrayList<String> f2, ArrayList<String> fX, ArrayList<String> names) throws Exception {
+        File surfaceDir = new File(path);
+        // JEEZ, basically, it goes like: Person -> theirTestCases -> typeTestcase -> files.
+        // needed to get the individual files to automate TESTING.
+        for (File dir : surfaceDir.listFiles()) { // This is the surface directory level, which gets each person's testcases surface FOLDER.
+            if (dir.isFile()) {
+                continue; // we dont care about that
+            }
+
+            //System.out.println(Arrays.toString(dir.listFiles()));
+            for (File deepDir : dir.listFiles()) { //Within this, go into nameFolder, where all within that, all the tests are seperated by folder.
+                //System.out.println("F:" + Arrays.toString(deepDir.listFiles()));
+
+                if (deepDir.isFile()) {
+                    continue; // dont care
+                }
+                for (File testDir : deepDir.listFiles()) { // Within this, go into individual testCases category. also get name here
+                   // names.add(testDir.getParent());
+                    names.add(testDir.getParentFile().getName());
+                    //System.out.println(testDir.getName()+": "+Arrays.toString(testDir.listFiles()));
+
+                    for (File testFile : testDir.listFiles()) { // get actual Testcase files.
+
+                        if (testFile.isFile()) {
+                            if (testFile.getName().endsWith(".xml")) {
+                                fX.add(testFile.getAbsolutePath());
+                            }
+                            else if (testFile.getName().contains("2")) {
+                                f2.add(testFile.getAbsolutePath());
+                            }
+                            else if (testFile.getName().contains("1")) {
+                                f1.add(testFile.getAbsolutePath());
+                            }
+                        }
+                    }
+
+                }
+            }
+        }
+    }
+
     public static void realTool(){
         Scanner input = new Scanner(System.in);
 

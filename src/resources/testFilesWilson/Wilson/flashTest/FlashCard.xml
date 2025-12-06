@@ -1,0 +1,30 @@
+<VERSION NUMBER = "1">
+    <LOCATION ORIG = "2" NEW = "3">
+        <ALT NEW="4"/>
+        <ALT NEW = "5"/>
+    </LOCATION>
+
+    <LOCATION ORIG = "4" NEW = "6">
+        <ALT NEW="7"/>
+        <ALT NEW="8"/>
+        <ALT NEW = "10"/>
+    </LOCATION>
+    <LOCATION ORIG = "4" NEW = "7"/>
+    <LOCATION ORIG = "4" NEW = "8"/>
+    <LOCATION ORIG = "4" NEW = "10"/>
+    <LOCATION ORIG = "6" NEW = "11"/>
+    <LOCATION ORIG = "8" NEW = "13"/>
+    <LOCATION ORIG = "9" NEW = "14"/>
+    <LOCATION ORIG = "10" NEW = "15"/>
+    <LOCATION ORIG = "11" NEW = "16"/>
+    <LOCATION ORIG = "12" NEW = "17">
+        <ALT NEW="18"/>
+    </LOCATION>
+    <LOCATION ORIG = "13" NEW = "19"/>
+    <LOCATION ORIG = "14" NEW = "20"/>
+    <LOCATION ORIG = "15" NEW = "21"/>
+    <LOCATION ORIG = "16" NEW = "22"/>
+    <LOCATION ORIG = "19" NEW = "25"/>
+    <LOCATION ORIG = "20" NEW = "26"/>
+    <LOCATION ORIG = "21" NEW = "27"/>
+</VERSION>
