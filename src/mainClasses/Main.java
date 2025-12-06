@@ -19,15 +19,16 @@ public class Main {
         String wilson = "testFilesWilson/";
 
 
-        String path = "src/resources/" + liana;
+        String path = "src/resources/";
 
-        String file_1 = "Calc_1.java";
-        String file_2 = "Calc_2.java";
-        String file_xml = "Calc";
+        String file_1 = "GC_1.java";
+        String file_2 = "GC_2.java";
+        String file_xml = "GC";
 
 
-        // System.out.println("Writing XML to: " + new File(path + file_xml + ".xml").getAbsolutePath());TestingCases.createXMLMappings(path+file_1, path+file_2, path+file_xml);
+         //System.out.println("Writing XML to: " + new File(path + file_xml + ".xml").getAbsolutePath());TestingCases.createXMLMappings(path+file_1, path+file_2, path+file_xml);
         testing(path, file_1, file_2, file_xml);
+        //TestingCases.writeCSVData(fileOnes, fileTwos, fileXMLs);
     }
     public static void testing(String path, String file1, String file2, String fileXml) throws Exception {
         MyReader file_1 = new MyReader(path + file1);

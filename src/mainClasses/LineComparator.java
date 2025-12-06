@@ -9,7 +9,7 @@ public class LineComparator {
 
     //this is the maxDiff value, if the similarity of two strings is below maxDiff, it will be matched
     //this value is adjustable increase or decrease max difference acceptability
-    double maxDiff = 0.25;
+    double maxDiff = 0.15;
 
     private ArrayList<String> file1;
     private ArrayList<String> file2;
@@ -71,7 +71,6 @@ public class LineComparator {
         unix_diff();    //matches identical lines
         similarityDiff(); //matches similar lines
         lineSplit();   //matches line splits
-
     }
 
     //compares, stores and returns results in an arraylist of pairs of integers (stored as int[]) gets matched and unmatched
@@ -104,8 +103,8 @@ public class LineComparator {
         //but this time, we won't compare for identical lines, but use levenshtein to compare similarity
         //we add the best similarity score match (thats also under the threshold) to matched array
         for(int i = 1; i < file1_size; i++) {
-            //skip empty lines
-            if (file1.get(i).trim().isEmpty())
+            //skip empty lines or lines that are matched
+            if (file1.get(i).trim().isEmpty() || matchedLines1.contains(i))
                 continue; //skiping the empty strings
 
             //keeps track of the best match and best similarity score
@@ -167,7 +166,7 @@ public class LineComparator {
         //loop thru the unmatched arrays again
         for(int i = 1; i < file1_size; i++) {
             //skip empty lines
-            if (file1.get(i).trim().isEmpty())
+            if (file1.get(i).trim().isEmpty() || matchedLines1.contains(i))
                 continue;
 
             for (int j = 1; j < file2_size; j++) {
@@ -225,7 +224,7 @@ public class LineComparator {
 
                 //now, if the score of the above loop is less then maxDiff, we add all lines to matched!
                 if(currentScore <= maxDiff) {
-                    for (int x = 0; x < lineSplitIndex; x++) {
+                    for (int x = 0; x <= lineSplitIndex; x++) {
                         //skips empty lines
                         if(file2.get(j+x).trim().isEmpty()){
                             continue;

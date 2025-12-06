@@ -3,6 +3,7 @@
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.BufferOverflowException;
 import java.util.*;
 import org.w3c.dom.*;
 import javax.xml.parsers.*;
@@ -22,9 +23,23 @@ public class TestingCases {
         System.out.println(fileList2);
 
         LineComparator comparator = new LineComparator(fileList1, fileList2);
+
+
+
+
         comparator.compare();
+        ArrayList<Integer>[] unmatchedLines = comparator.getUnmatched();
+
+        System.out.println("These are unmatched! \n"+unmatchedLines[0] + "\n" + unmatchedLines[1] + "\n");
+
+
 
         ArrayList<int []> results = comparator.getMatched();
+
+        for (Integer x : unmatchedLines[0]){
+            results.add(new int[]{x,-1}); // add unmatched
+        }
+
         List<Integer> range = new ArrayList<>();
 
         try{
@@ -49,21 +64,19 @@ public class TestingCases {
             int y = pair[1];
 
             //basically, input the range of X, x being first file line range.
-            //if (x >= range.get(0) && x <= range.get(range.size()-1)){
-
-            System.out.println("First File: "+ x + " Second File: " + y);
-            getLine(file1, file2, x, y);
 
 
+            //System.out.println("First File: "+ x + " Second File: " + y);getLine(file1, file2, x, y);
 
-            //}
         }
         System.out.println(percentageTest(results, xmlFile) + "%");
 
     }
     //for getLine, input the x, being the line number of the first file, and the line number of the second.
     private static void getLine(MyReader file1, MyReader file2, int x, int y){
-
+        if (y == -1){ // if no matching lines
+            return;
+        }
         System.out.print("\t\""+file1.listConverter().get(x).trim() + "\" |and| \"" + file2.listConverter().get(y).trim()+"\"\n");
     }
     private static void writeLineXML(BufferedWriter writer, MyReader file1, MyReader file2, int x, int y) throws IOException {
@@ -110,6 +123,12 @@ public class TestingCases {
         File file = new File(xmlFile);
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+        try {
+        Document d = dBuilder.parse(file);} // try and if not then die.
+        catch (Exception e) {
+            System.err.println("xml error " + file.getAbsolutePath());
+            return -1;
+        }
         Document doc = dBuilder.parse(file);
         NodeList versionTagList = doc.getElementsByTagName("VERSION");
         Element versionNum = (Element) versionTagList.item(versionTagList.getLength() - 1); // will always get the version we need.
@@ -131,29 +150,46 @@ public class TestingCases {
         }
         int countCorrect = 0;
 
+        System.out.println(correctDataset[0]);
+        System.out.println(correctDataset[1]);
+        System.out.println("SIZE OF Correct Dataset: " + correctDataset[0].size());
+
+
+
+
+
         for (int[] pair : ourList) {
             int x = pair[0];
             int y = pair[1];
 
-            boolean matched = false;
 
-            //if comparing within a range. basically, getIndex could help.
+            if ((x > correctDataset[0].getFirst() && x<correctDataset[0].getLast())){
+                System.out.println(countCorrect);
+                //also check for umatched, and then map them to -1
+                //we check for Xs only I think
 
 
-            for (int i = 0; i < correctDataset[0].size(); i++) {
-                if (correctDataset[0].get(i) == x && correctDataset[1].get(i) == y) {
-                    matched = true;
-                    break;
+
+                System.out.println("TRYING TO FIND: "+correctDataset[0].indexOf(x) +" = " +x+" and "+ correctDataset[1].indexOf(y) + "="+y);
+                if ((!correctDataset[0].contains(x) || !correctDataset[1].contains(y))) { // the problem is that this looks within the whole file, and some datasets are within a range.
+                    System.out.println("COULD NOT FIND " + x +" and "+ y + " in the correct dataset");
                 }
+                for (int i = 0; i < correctDataset[0].size(); i++) {
+
+                    if (correctDataset[0].get(i) == x && correctDataset[1].get(i) == y) {
+                        //System.out.println(x +"FOUND "+ y);
+                        countCorrect++;
+                        break;
+                    }
+                }
+
             }
 
-            if (matched) {
-                System.out.println("Correct " + x + " " + y);
-                countCorrect++;
-            }
         }
 
-        double percentage = (double) countCorrect / correctDataset[0].size() * 100;
+        System.out.println("Correct: "+ countCorrect);
+        System.out.println(correctDataset[0].size());
+        double percentage = (double) (countCorrect) / (correctDataset[0].size()) * 100;
 
 
         return percentage;
@@ -203,12 +239,23 @@ public class TestingCases {
 
             System.err.println("Error writing to file " + e.getMessage());
         }
-
-
-
-
-
     }
 
+    // TODO: Need to check for deletions in output and testing!!!!!! Basically, just get unmatched and map them to -1, then add them to the list.
+
+    public static void writeCSVData(ArrayList<String> files1, ArrayList<String> files2, ArrayList<String> xmlFiles){
+        try{
+            BufferedWriter writer = new BufferedWriter(new FileWriter("TESTING_RESULTS.csv"));
+            writer.write("File 1, File 2, XML File, Percentage"); // columns here
+
+
+            writer.flush();
+            writer.close();
+
+        } catch (IOException e) {
+            System.out.println("Error writing to file " + e.getMessage());
+        }
+
+    }
 
 }
