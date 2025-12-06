@@ -26,23 +26,7 @@ public class shop {
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
         String line;
-        String main = "";
-        String side = "";
-        String drink = "";
-        double total = 0;;
 
-        double main1 = 9.99;
-        double main2 = 10.99;
-        double main3 = 10.99;
-        double main4 = 13.99;
-
-        double side1 = 3.99;
-        double side2 = 3.99;
-        double side3 = 7.99;
-
-        double drink1 = 1.99;
-        double drink2 = 1.99;
-        double drink3 = 4.99;
         
         while(true){
             System.out.println("Type in an option:");
@@ -68,50 +52,7 @@ public class shop {
                     menu3();
                 }
             }
-            else if(line == "Order"){
-                System.out.println("Type the main you want:");
-                main = input.nextLine();
-
-                if(main == "Hamburger"){
-                    total += main1;
-                }
-                else if(main == "Cheeseburger"){
-                    total += main2;
-                }
-                else if(main == "Veggie Burger"){
-                    total += main3;
-                }
-                else if(main == "Double Burger"){
-                    total += main4;
-                }
-
-                System.out.println("Type the side you want:");
-                side = input.nextLine();
-                if(side == "Fries"){
-                    total += side1;
-                }
-                else if(side == "Onion Rings"){
-                    total += side2;
-                }
-                else if(side == "Poutine"){
-                    total += side3;
-                }
-
-                System.out.println("Type the drink you want:");
-                drink = input.nextLine();
-                if(drink == "Soda"){
-                    total += drink1;
-                }
-                else if(drink == "Water"){
-                    total += drink2;
-                }
-                else if(drink == "Milkshake"){
-                    total += drink3;
-                }
-
-                System.out.println("Total: $" + total);
-                System.out.println("Thank you for ordering");
-            }
+            
             else{
                 System.out.println("Invalid");
             }

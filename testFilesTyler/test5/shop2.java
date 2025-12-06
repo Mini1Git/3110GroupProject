@@ -47,7 +47,7 @@ public class shop {
 
             op = input.nextInt();
             if(op == 1){
-                System.out.println("Type in an option (number only):");
+                System.out.println("Type in an option:");
                 System.out.println("1) Mains");
                 System.out.println("2) Sides");
                 System.out.println("3) Drinks");
@@ -63,50 +63,7 @@ public class shop {
                     menu3();
                 }
             }
-            else if(op == 2){
-                System.out.println("Type the main you want:");
-                main = input.nextLine();
-
-                if(main == "Hamburger"){
-                    total += main1;
-                }
-                else if(main == "Cheeseburger"){
-                    total += main2;
-                }
-                else if(main == "Veggie Burger"){
-                    total += main3;
-                }
-                else if(main == "Double Burger"){
-                    total += main4;
-                }
-
-                System.out.println("Type the side you want:");
-                side = input.nextLine();
-                if(side == "Fries"){
-                    total += side1;
-                }
-                else if(side == "Onion Rings"){
-                    total += side2;
-                }
-                else if(side == "Poutine"){
-                    total += side3;
-                }
-
-                System.out.println("Type the drink you want:");
-                drink = input.nextLine();
-                if(drink == "Soda"){
-                    total += drink1;
-                }
-                else if(drink == "Water"){
-                    total += drink2;
-                }
-                else if(drink == "Milkshake"){
-                    total += drink3;
-                }
-
-                System.out.println("Total: $" + total);
-                System.out.println("Thank you for ordering");
-            }
+            
             else{
                 System.out.println("Invalid");
             }
