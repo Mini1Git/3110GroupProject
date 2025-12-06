@@ -189,28 +189,17 @@ public class LineComparator {
                     nextLine2 = 0;
                 }
 
-                String currentLineString = file2.get(j);
-                double contentDiff = normalizedLD(file1.get(i), currentLineString);
-                double contextDiff = (normalizedLD(file1.get(prevLine1), file2.get(prevLine2)) + normalizedLD(file1.get(nextLine1), file2.get(nextLine2))) / 2;
-                double currentScore = (contentDiff*0.6) + (contextDiff*0.4); //we get our starting scores and data
-
-                int lineSplitIndex = 1;
+                String currentLineString = "";
+                double currentScore = 1.0;
+                int lineSplitIndex = 0;
 
                 //now we check for line splitting
                 //if the line after the current line isnt unmatched, it means it's arleady matched by another index and thus isn't part of the line split
                 while(!matchedLines2.contains(j+lineSplitIndex) && j + lineSplitIndex < file2_size){
-                    //update the nextLine2 if there is one
-                    if(nextLine2 < file2_size - 1){
-                        nextLine2 += 1;
-                    }
-                    else{
-                        nextLine2 = 0;
-                    }
-
                     //we concatinate the next line with our currentLine and then check score for the new concat string (using context + content diff)
                     currentLineString = currentLineString + file2.get(j+lineSplitIndex);
-                    contentDiff = normalizedLD(file1.get(i), currentLineString);
-                    contextDiff = (normalizedLD(file1.get(prevLine1), file2.get(prevLine2)) + normalizedLD(file1.get(nextLine1), file2.get(nextLine2))) / 2;
+                    double contentDiff = normalizedLD(file1.get(i), currentLineString);
+                    double contextDiff = (normalizedLD(file1.get(prevLine1), file2.get(prevLine2)) + normalizedLD(file1.get(nextLine1), file2.get(nextLine2))) / 2;
                     double nextScore = (contentDiff*0.6) + (contextDiff*0.4);
                     if(nextScore > currentScore){
                         //once concatinating the lines stop decreasing the ld, we stop checking for line split
@@ -219,11 +208,19 @@ public class LineComparator {
                     else{
                         currentScore = nextScore;
                         lineSplitIndex += 1;
+
+                        //update the nextLine2 if there is one
+                        if(nextLine2 < file2_size - 1){
+                            nextLine2 += 1;
+                        }
+                        else{
+                            nextLine2 = 0;
+                        }
                     }
                 }
 
                 //now, if the score of the above loop is less then maxDiff, we add all lines to matched!
-                if(currentScore <= maxDiff) {
+                if(currentScore < maxDiff) {
                     for (int x = 0; x <= lineSplitIndex; x++) {
                         //skips empty lines
                         if(file2.get(j+x).trim().isEmpty()){
@@ -265,4 +262,5 @@ public class LineComparator {
         System.out.println(matchedLines2);
     }
 }
+
 
