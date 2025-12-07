@@ -25,7 +25,7 @@ public class Main {
         String file2 = "ProfDataset/Professor/javaPerspectiveFactory/JavaPerspectiveFactory_2.java";
         String fileXML = "ProfDataset/Professor/javaPerspectiveFactory/JavaPerspectiveFactory";
         findFiles(path, fileOnes, fileTwos, fileXMLs, names); // helps with automation
-        TestingCases.writeCSVData(fileOnes, fileTwos, fileXMLs, names, false);
+        TestingCases.writeCSVData(fileOnes, fileTwos, fileXMLs, names, true);
 
          //System.out.println("Writing XML to: " + new File(path + file_xml + ".xml").getAbsolutePath());TestingCases.createXMLMappings(path+file_1, path+file_2, path+file_xml);
         //testing(path, file1, file2, fileXML ); //for testing specific datasets.

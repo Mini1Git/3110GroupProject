@@ -11,6 +11,7 @@ import javax.xml.parsers.*;
 import java.io.File;
 
 public class TestingCases {
+    
     public static void run(MyReader file1, MyReader file2, String xmlFile) throws Exception {
 
         ArrayList<String> fileList1 = file1.listConverter();
@@ -122,17 +123,19 @@ public class TestingCases {
                 int y = pair[1];
 
 
-                if (!correctMap.containsKey(x)) continue;// skip these, but will make it so that this will evaluate within the XML correct range.
+            if (!correctMap.containsKey(x)) continue;// skip these, but will make it so that this will evaluate within the XML correct range.
 
                 List<Integer> possiblePairsX = correctMap.get(x);
-                List<Integer> possiblePairsY = correctMap.get(y);
+
                 if (possiblePairsX.contains(y)) {
                     countCorrect++;
+
                 }
 
             }
-        double percentage = (double) (countCorrect) / (correctMap.size()) * 100;
-        return percentage;
+        double percentage = (double) countCorrect / correctMap.size() * 100;
+        return Math.min(percentage, 100.0);
+
     }
     private static void sortList(ArrayList<int[]> results){
         results.sort((a, b) -> {
@@ -208,7 +211,7 @@ public class TestingCases {
                     }
                     sortList(results);
                     try {
-                        writer.write(nameOfPersons.get(i) + ", " + file1_Path.getName() + ", " + file2_Path.getName() + ", " + xmlFile.getName() + ", " + percentageTest(results, xmlFiles.get(i)));
+                        writer.write(nameOfPersons.get(i) + "," + file1_Path.getName() + "," + file2_Path.getName() + "," + xmlFile.getName() + "," + percentageTest(results, xmlFiles.get(i)));
 
                     } catch (Exception e) {
                         System.err.println("Error writing to file: " + e.getMessage() + " " + xmlFiles.get(i));
@@ -224,6 +227,8 @@ public class TestingCases {
             }
             else{
                 try {
+                    ArrayList<Double> listOfPercentage = new ArrayList<>();
+
                     BufferedWriter writer = new BufferedWriter(new FileWriter("maxDiffPercentages.csv"));
                     writer.write("MaxDiff, Percentage");
                     DecimalFormat df = new DecimalFormat("#.##");
@@ -257,8 +262,11 @@ public class TestingCases {
 
                         }
                         writer.newLine();
-                        writer.write(m +", " + df.format(totalPercentage/xmlFiles.size()) + "%");
+                        double percentage = totalPercentage / xmlFiles.size();
+                        writer.write(m +", " + df.format(percentage) + "%");
+                        listOfPercentage.add(percentage);
                     }
+                    System.out.println("\n\nFINISHED!\n" + listOfPercentage);
                     writer.flush();
                     writer.close();
                 }
