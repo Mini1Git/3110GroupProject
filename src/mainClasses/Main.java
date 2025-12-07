@@ -21,14 +21,14 @@ public class Main {
         String path = "src/resources/";
 
 
-        String file1 = "ProfDataset/Professor/doubleCacheTest/DoubleCache_1.java";
-        String file2 = "ProfDataset/Professor/doubleCacheTest/DoubleCache_2.java";
-        String fileXML = "ProfDataset/Professor/doubleCacheTest/DoubleCache";
+        String file1 = "ProfDataset/Professor/javaPerspectiveFactory/JavaPerspectiveFactory_1.java";
+        String file2 = "ProfDataset/Professor/javaPerspectiveFactory/JavaPerspectiveFactory_2.java";
+        String fileXML = "ProfDataset/Professor/javaPerspectiveFactory/JavaPerspectiveFactory";
         findFiles(path, fileOnes, fileTwos, fileXMLs, names); // helps with automation
-        TestingCases.writeCSVData(fileOnes, fileTwos, fileXMLs, names);
+        TestingCases.writeCSVData(fileOnes, fileTwos, fileXMLs, names, false);
 
          //System.out.println("Writing XML to: " + new File(path + file_xml + ".xml").getAbsolutePath());TestingCases.createXMLMappings(path+file_1, path+file_2, path+file_xml);
-        //testing(path, file1, file2 , fileXML ); for testing specific datasets.
+        //testing(path, file1, file2, fileXML ); //for testing specific datasets.
 
     }
     public static void testing(String path, String file1, String file2, String fileXml) throws Exception {
@@ -67,11 +67,7 @@ public class Main {
                         if (testFile.isFile()) {
                             if (testFile.getName().endsWith(".xml")) {
                                 fX.add(testFile.getAbsolutePath());
-                                if (!testDir.getParentFile().getName().equals("Professor")) { // calculate the mappings
-                                    System.out.println("lines of" + testDir.getParentFile().getName());
-                                    Path filePath = Paths.get(testFile.getPath());
-                                    totalMappings += (int) Files.lines(filePath).count();
-                                }
+             //This line of code is to calculate how many mappings our team has. // if (!testDir.getParentFile().getName().equals("Professor")) {System.out.println("lines of" + testDir.getParentFile().getName());Path filePath = Paths.get(testFile.getPath());totalMappings += (int) Files.lines(filePath).count();}
 
                             }
                             else if (testFile.getName().contains("2")) {
@@ -86,7 +82,7 @@ public class Main {
                 }
             }
         }
-        System.out.println("WE HAVE "+(totalMappings - 40) + " MAPPINGS!"); // -40 because of the <VERSION> (theres 2 in each xml file)
+       // System.out.println("WE HAVE "+(totalMappings - 40) + " MAPPINGS!"); // -40 because of the <VERSION> (theres 2 in each xml file)
     }
 
     public static void realTool(){

@@ -4,6 +4,7 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.BufferOverflowException;
+import java.text.DecimalFormat;
 import java.util.*;
 import org.w3c.dom.*;
 import javax.xml.parsers.*;
@@ -64,7 +65,7 @@ public class TestingCases {
     }
     private static void writeLineXML(BufferedWriter writer, MyReader file1, MyReader file2, int x, int y) throws IOException {
 
-        writer.write("\t<!--\""+file1.listConverter().get(x).trim() + "\" |and| \"" + file2.listConverter().get(y).trim()+"\"-->\n");
+        writer.write("\t<!--\""+file1.listConverter().get(x).trim() + "\" |and| \"" + file2.listConverter().get(y).trim()+"\"-->");
     }
 
 
@@ -123,10 +124,12 @@ public class TestingCases {
 
                 if (!correctMap.containsKey(x)) continue;// skip these, but will make it so that this will evaluate within the XML correct range.
 
-                List<Integer> possiblePairs = correctMap.get(x);
-                if (possiblePairs.contains(y)) {
+                List<Integer> possiblePairsX = correctMap.get(x);
+                List<Integer> possiblePairsY = correctMap.get(y);
+                if (possiblePairsX.contains(y)) {
                     countCorrect++;
                 }
+
             }
         double percentage = (double) (countCorrect) / (correctMap.size()) * 100;
         return percentage;
@@ -178,52 +181,102 @@ public class TestingCases {
         }
     }
 
-    public static void writeCSVData(ArrayList<String> files1, ArrayList<String> files2, ArrayList<String> xmlFiles, ArrayList<String> nameOfPersons){
+    public static void writeCSVData(ArrayList<String> files1, ArrayList<String> files2, ArrayList<String> xmlFiles, ArrayList<String> nameOfPersons, boolean writeTestingResults){
+         // if wanna write testing results, WriteTestingResults = true;, ELSE, write the overall percentages with var maxDiff.
         try{
-            BufferedWriter writer = new BufferedWriter(new FileWriter("TESTING_RESULTS.csv"));
-            writer.write("Author, File 1, File 2, XML File, Percentage"); // columns here
-            System.out.println(xmlFiles.size());
-            double total = 0;
-            for (int i = 0; i < xmlFiles.size(); i++){
-                System.out.println("Working on... " + xmlFiles.get(i));
-                File file1_Path = new File(files1.get(i));
-                File file2_Path = new File(files2.get(i));
-                File xmlFile = new File(xmlFiles.get(i));
-                writer.newLine();
-                MyReader file1 = new MyReader(file1_Path.getPath());
-                MyReader file2 = new MyReader(file2_Path.getPath());
-                LineComparator lc = new LineComparator(file1.listConverter(), file2.listConverter());
-                lc.compare();
-                ArrayList<int[]> results = lc.getMatched();
-                ArrayList<Integer>[] unmatchedLines = lc.getUnmatched();
-                for (Integer x : unmatchedLines[0]){
-                    results.add(new int[]{x,-1}); // add unmatched
-                }
-                sortList(results);
-                try{
-                writer.write(nameOfPersons.get(i)+", "+file1_Path.getName() + ", " + file2_Path.getName() + ", " + xmlFile.getName() + ", " + percentageTest(results, xmlFiles.get(i)));
+            if (writeTestingResults) {
+                BufferedWriter writer = new BufferedWriter(new FileWriter("TESTING_RESULTS.csv"));
+                writer.write("Author, File 1, File 2, XML File, Percentage"); // columns here
+                System.out.println(xmlFiles.size());
+                double total = 0;
+                for (int i = 0; i < xmlFiles.size(); i++) {
+                    System.out.println("Working on... " + xmlFiles.get(i));
+                    File file1_Path = new File(files1.get(i));
+                    File file2_Path = new File(files2.get(i));
+                    File xmlFile = new File(xmlFiles.get(i));
+                    writer.newLine();
+                    MyReader file1 = new MyReader(file1_Path.getPath());
+                    MyReader file2 = new MyReader(file2_Path.getPath());
+                    LineComparator lc = new LineComparator(file1.listConverter(), file2.listConverter());
 
-                }
+                    lc.compare();
+                    ArrayList<int[]> results = lc.getMatched();
+                    ArrayList<Integer>[] unmatchedLines = lc.getUnmatched();
 
-                catch (Exception e){
-                    System.err.println("Error writing to file: " + e.getMessage() + " " + xmlFiles.get(i));
+                    for (Integer x : unmatchedLines[0]) {
+                        results.add(new int[]{x, -1}); // add unmatched
+                    }
+                    sortList(results);
+                    try {
+                        writer.write(nameOfPersons.get(i) + ", " + file1_Path.getName() + ", " + file2_Path.getName() + ", " + xmlFile.getName() + ", " + percentageTest(results, xmlFiles.get(i)));
+
+                    } catch (Exception e) {
+                        System.err.println("Error writing to file: " + e.getMessage() + " " + xmlFiles.get(i));
+                    }
+                    System.out.println("Done " + xmlFiles.get(i) + "!");
+                    //wanna calculate average of all tests.
+                    total += percentageTest(results, xmlFiles.get(i));
                 }
-                System.out.println("Done " + xmlFiles.get(i) + "!");
-                //wanna calculate average of all tests.
-                total += percentageTest(results, xmlFiles.get(i));
+                double avg = total / xmlFiles.size();
+                System.out.println("\n\nFINISHED!\nAverage is: " + avg + "%");
+                writer.flush();
+                writer.close();
             }
-            double avg = total / xmlFiles.size();
-            System.out.println("\n\nFINISHED!\nAverage is: " + avg+ "%");
-            writer.flush();
-            writer.close();
+            else{
+                try {
+                    BufferedWriter writer = new BufferedWriter(new FileWriter("maxDiffPercentages.csv"));
+                    writer.write("MaxDiff, Percentage");
+                    DecimalFormat df = new DecimalFormat("#.##");
+                    double totalPercentage;
+                    DecimalFormat formatMaxDiff = new DecimalFormat("#.###");
+                    double start = 0.1;
+                    for (int data = 0; data < 800; data++) {
+                        totalPercentage = 0;
+                        double m = start + data / 1000.0;
+                        System.out.println("Loop "+ (data+1) +":\n\tWorking on... maxDiff = " + formatMaxDiff.format(m));
+                        for (int i = 0; i < xmlFiles.size(); i++) {
+
+                            File file1_Path = new File(files1.get(i));
+                            File file2_Path = new File(files2.get(i));
+                            File xmlFile = new File(xmlFiles.get(i));
+                            MyReader file1 = new MyReader(file1_Path.getPath());
+                            MyReader file2 = new MyReader(file2_Path.getPath());
+                            LineComparator lc = new LineComparator(file1.listConverter(), file2.listConverter());
+                            lc.maxDiff = m;
+                            lc.compare();
+                            ArrayList<int[]> results = lc.getMatched();
+                            ArrayList<Integer>[] unmatchedLines = lc.getUnmatched();
+
+                            for (Integer x : unmatchedLines[0]) {
+                                results.add(new int[]{x, -1}); // add unmatched
+                            }
+                            sortList(results);
+                            totalPercentage += percentageTest(results, xmlFiles.get(i));
+
+
+
+                        }
+                        writer.newLine();
+                        writer.write(m +", " + df.format(totalPercentage/xmlFiles.size()) + "%");
+                    }
+                    writer.flush();
+                    writer.close();
+                }
+                catch (Exception e){
+                    System.err.println("Error writing to file " + e.getMessage());
+                }
+            }
 
         } catch (IOException e) {
             System.out.println("Error writing to file " + e.getMessage());
         } catch (Exception e) {
             System.out.println("Error writing to file :" + e.getMessage() + "??????\n ");
+            e.printStackTrace();
 
         }
 
     }
+
+
 
 }
