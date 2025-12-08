@@ -9,7 +9,7 @@ public class LineComparator {
 
     //this is the maxDiff value, if the similarity of two strings is below maxDiff, it will be matched
     //this value is adjustable increase or decrease max difference acceptability
-    public double maxDiff = 0.325;
+    double maxDiff = 0.325;
 
     private ArrayList<String> file1;
     private ArrayList<String> file2;
@@ -262,4 +262,5 @@ public class LineComparator {
         System.out.println(matchedLines2);
     }
 }
+
 
