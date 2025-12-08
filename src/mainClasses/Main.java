@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class Main {
     public static void main(String [] args) throws Exception {
-        //realTool();
+        realTool();
         // below is testing
         //finish all the XML files first, then make an array of all the file1s, file2s, and xml files. Then make loop to auto test the results.
         ArrayList<String> fileOnes = new ArrayList<>();
@@ -24,8 +24,9 @@ public class Main {
         String file1 = "ProfDataset/Professor/javaPerspectiveFactory/JavaPerspectiveFactory_1.java";
         String file2 = "ProfDataset/Professor/javaPerspectiveFactory/JavaPerspectiveFactory_2.java";
         String fileXML = "ProfDataset/Professor/javaPerspectiveFactory/JavaPerspectiveFactory";
-        findFiles(path, fileOnes, fileTwos, fileXMLs, names); // helps with automation
-        TestingCases.writeCSVData(fileOnes, fileTwos, fileXMLs, names, true);
+        // TESTING
+        // findFiles(path, fileOnes, fileTwos, fileXMLs, names); // helps with automation
+        //TestingCases.writeCSVData(fileOnes, fileTwos, fileXMLs, names, true);
 
          //System.out.println("Writing XML to: " + new File(path + file_xml + ".xml").getAbsolutePath());TestingCases.createXMLMappings(path+file_1, path+file_2, path+file_xml);
         //testing(path, file1, file2, fileXML ); //for testing specific datasets.
