@@ -7,6 +7,13 @@ General Program - How to run
 2. input your full/relative path to file 1
 3. input your full/relative path to file 2
 4. See results in results.xml
+--------------------------------------------------
+Testing - How to run
+--------------------------------------------------
+1. Go to Main class, uncomment the findFiles() call and TestingCases.writeCSVData() call.
+2. Comment out realTool() if you want to run automated tests.
+3. Run Main. 
+4. All of the testing data should then output to a CSV file named TESTING_RESULTS.csv.
 
 --------------------------------------------------
 Bonus question - Bug Finder
