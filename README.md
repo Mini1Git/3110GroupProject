@@ -1,5 +1,12 @@
 # 3110GroupProject
 Group Project for 3110 course
+--------------------------------------------------
+General Program - How to run
+--------------------------------------------------
+1. Run Main Class
+2. input your full/relative path to file 1
+3. input your full/relative path to file 2
+4. See results in results.txt
 
 --------------------------------------------------
 Bonus question - Bug Finder
