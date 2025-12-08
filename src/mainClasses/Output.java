@@ -45,7 +45,7 @@ public class Output {
                 //line split match
                 //first match printed normally
                 else{
-                    writer.write("        <LOCATION ORIG=\"" + x + "\" NEW=\"" + newLines.get(0) + "\">");
+                    writer.write("    <LOCATION ORIG=\"" + x + "\" NEW=\"" + newLines.get(0) + "\">");
                     writer.newLine();
 
                     //other line split matches printed in ALT tags
