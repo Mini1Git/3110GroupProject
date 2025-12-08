@@ -86,20 +86,35 @@ public class Main {
        // System.out.println("WE HAVE "+(totalMappings - 40) + " MAPPINGS!"); // -40 because of the <VERSION> (theres 2 in each xml file)
     }
 
+    public static ArrayList<String> verifyFile(String fileName) throws FileNotFoundException {
+        MyReader file = new MyReader(fileName); //Takes in the file name and sets it as string name to use for listConverter().
+        ArrayList<String> fileList = file.listConverter(); // converts the file to array of strings
+        if(fileList==null) // if the list is null, altho wouldnt this be handled in MyReader class?
+            throw new FileNotFoundException();
+
+        //remove quotations
+        fileName = fileName.replace("\"", "");
+
+        //check file exists
+        File targetFile = new File(fileName);
+        if (!targetFile.exists()){
+            throw new FileNotFoundException();
+        }
+        return fileList;
+    }
+
     public static void realTool(){
         Scanner input = new Scanner(System.in);
 
         try {
+            System.out.println("Enter the first file name/path > ");
             String fileName1 = input.nextLine(); //taking user input for file name
-            MyReader file1 = new MyReader(fileName1); //Takes in the file name and sets it as string name to use for listConverter().
-            ArrayList<String> fileList1 = file1.listConverter(); // converts the file to array of strings
-            if(fileList1==null) // if the list is null, altho wouldnt this be handled in MyReader class?
-                throw new FileNotFoundException();
+            ArrayList<String> fileList1 = verifyFile(fileName1);
+
+            System.out.println("Enter the second file name/path > ");
             String fileName2 = input.nextLine(); //taking user input for file name
-            MyReader file2 = new MyReader(fileName2);
-            ArrayList<String> fileList2 = file2.listConverter();
-            if(fileList2==null)
-                throw new FileNotFoundException();
+            ArrayList<String> fileList2 = verifyFile(fileName2);
+
             //comparison
             LineComparator comparator = new LineComparator(fileList1, fileList2);
             comparator.compare();
@@ -110,6 +125,7 @@ public class Main {
         }
         catch (FileNotFoundException e) {
             System.err.println("File cannot be found");
+            System.exit(1);
         }
 
         input.close();
