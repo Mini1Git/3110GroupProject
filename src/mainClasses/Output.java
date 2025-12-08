@@ -8,6 +8,10 @@ public class Output {
 
     public static void writeToFile(String filename, ArrayList<int[]> pairs){
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))){
+            int old_x = 0;
+
+            writer.write("<VERSION NUMBER = \"" + 1 + "\" >");
+            writer.newLine();
 
             //loop through each element in arrayList
             for (int[] pair : pairs){
@@ -15,9 +19,18 @@ public class Output {
                 int x = pair[0];
                 int y = pair[1];
 
-                writer.write("<LOCATION ORIG = \"" + x + "\" NEW = \"" + y + "\" />");
+                //line splits
+                if (old_x == x){
+                    writer.write("\t<ALT NEW = \"" + y + "\" />");
+                }
+
+                else{
+                    writer.write("<LOCATION ORIG = \"" + x + "\" NEW = \"" + y + "\" />");
+                }
                 writer.newLine();
+                old_x = x;
             }
+            writer.write("</VERSION>");
             System.out.print("Results written successfully to " + filename);
         } catch (IOException e) {
             System.err.println("Error writing to file " + e.getMessage());
