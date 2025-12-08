@@ -90,16 +90,42 @@ public class Main {
         Scanner input = new Scanner(System.in);
 
         try {
+            System.out.println("Enter the first file name/path > ");
             String fileName1 = input.nextLine(); //taking user input for file name
+
             MyReader file1 = new MyReader(fileName1); //Takes in the file name and sets it as string name to use for listConverter().
             ArrayList<String> fileList1 = file1.listConverter(); // converts the file to array of strings
             if(fileList1==null) // if the list is null, altho wouldnt this be handled in MyReader class?
                 throw new FileNotFoundException();
+
+            //remove quotations
+            fileName1 = fileName1.replace("\"", "");
+
+            //check file 1 exists
+            File targetFile = new File(fileName1);
+            if (!targetFile.exists()){
+                System.out.println("File not found. exiting ");
+                return;
+            }
+
+            System.out.println("Enter the second file name/path > ");
             String fileName2 = input.nextLine(); //taking user input for file name
+
             MyReader file2 = new MyReader(fileName2);
             ArrayList<String> fileList2 = file2.listConverter();
             if(fileList2==null)
                 throw new FileNotFoundException();
+
+            //remove quotations
+            fileName2 = fileName2.replace("\"", "");
+
+            //check file 2 exists
+            File targetFile2 = new File(fileName2);
+            if (!targetFile.exists()){
+                System.out.println("File not found. exiting ");
+                return;
+            }
+
             //comparison
             LineComparator comparator = new LineComparator(fileList1, fileList2);
             comparator.compare();
