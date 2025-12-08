@@ -9,7 +9,7 @@ public class LineComparator {
 
     //this is the maxDiff value, if the similarity of two strings is below maxDiff, it will be matched
     //this value is adjustable increase or decrease max difference acceptability
-    public double maxDiff = 0.325;
+    double maxDiff = 0.325;
 
     private ArrayList<String> file1;
     private ArrayList<String> file2;
@@ -71,6 +71,9 @@ public class LineComparator {
         unix_diff();    //matches identical lines
         similarityDiff(); //matches similar lines
         lineSplit();   //matches line splits
+
+        ArrayList<Integer>[] unmatched = getUnmatched();
+        System.out.println(unmatched[0] + "\n" + unmatched[1]);
     }
 
     //compares, stores and returns results in an arraylist of pairs of integers (stored as int[]) gets matched and unmatched
