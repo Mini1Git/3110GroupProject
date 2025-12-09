@@ -1,7 +1,8 @@
+package mainClasses;
+
 import java.util.ArrayList;
 //import apache text library's levenshtein function as we will use it for similarity diff
 import org.apache.commons.text.similarity.LevenshteinDistance;
-import java.util.Arrays;
 import java.util.HashSet;
 //Line Comparator class
 

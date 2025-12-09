@@ -1,3 +1,5 @@
+package mainClasses;
+
 import java.util.Scanner;
 import java.io.File;
 
@@ -14,6 +16,7 @@ public class BonusMain {
         File repoDir = new File(repoPath);
         if (!repoDir.exists() || !repoDir.isDirectory()){
             System.out.println("Repository path doesnt exist. exiting");
+            input.close();
             return;
         }
 
@@ -27,6 +30,7 @@ public class BonusMain {
         File targetFile = new File(repoDir, fileName);
         if (!targetFile.exists()){
             System.out.println("File not found. exiting ");
+            input.close();
             return;
         }
 
