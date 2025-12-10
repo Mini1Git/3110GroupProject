@@ -1,5 +1,5 @@
 # 3110GroupProject
-Group Project for 3110 course
+Group Project for 3110 course.
 Group members:
 Wilson Tran,
 Daniel Lien,
