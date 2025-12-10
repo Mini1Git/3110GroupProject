@@ -4,7 +4,7 @@ Group members:
 Wilson Tran,
 Daniel Lien,
 Nazifa Tahsin, 
-Liana Bell
+Liana Bell,
 Tyler Wang
 
 --------------------------------------------------
