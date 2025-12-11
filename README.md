@@ -6,7 +6,7 @@ How to compile
 --------------------------------------------------
 1. Open terminal in the root folder 3110GROUPPROJECT
 2. Run the following command:
-    javac -d bin -cp "lib\*" src\mainClasses\*.java
+    `javac -d bin -cp "lib\*" src\mainClasses\*.java`
 3. Resulting .class folders will be in \bin
 
 --------------------------------------------------
@@ -14,7 +14,7 @@ General Program - How to run
 --------------------------------------------------
 1. Open terminal in the root folder 3110GROUPPROJECT
 2. Run Main by entering the following command:
-    java -cp "bin;lib\*" mainClasses.Main
+    `java -cp "bin;lib\*" mainClasses.Main`
 3. input your full/relative path to file 1
 4. input your full/relative path to file 2
 5. See results in results.xml
@@ -32,7 +32,7 @@ Bonus question - Bug Finder
 --------------------------------------------------
 1. Open terminal in the root folder 3110GROUPPROJECT 
 2. Run BonusMain by entering the following command:
-    java -cp "bin;lib\*" mainClasses.BonusMain
+    `java -cp "bin;lib\*" mainClasses.BonusMain`
 3. Input your Full absolute path to the git repository
 4. Input the filename/relative path of the file you want to analyze
 5. The latest commit in the repository MUST have a commit message containing "fix", "bug", "repair"
